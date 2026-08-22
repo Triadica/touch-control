@@ -51,7 +51,7 @@
                 option:unwrap-or (get states :left-move) ([] 0 0)
                 option:unwrap-or (get states :right-move) ([] 0 0)
                 (option:unwrap-or (get states :left-a?) false)
-                  option:unwrap-or (get states :right-a?) false
+                (option:unwrap-or (get states :right-a?) false)
               set!
                 .-innerText $ unsafe-coerce (js/document.querySelector |pre) JsObject
                 format-cirru-edn $ {} (:states states) (:delta delta)
