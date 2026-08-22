@@ -47,8 +47,11 @@
         |show-data! $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn show-data! (elapsed states delta)
-              println |showing elapsed (option:unwrap-or (get states :left-move) ([] 0 0)) (option:unwrap-or (get states :right-move) ([] 0 0))
-                (option:unwrap-or (get states :left-a?) false) (option:unwrap-or (get states :right-a?) false)
+              println |showing elapsed
+                option:unwrap-or (get states :left-move) ([] 0 0)
+                option:unwrap-or (get states :right-move) ([] 0 0)
+                (option:unwrap-or (get states :left-a?) false)
+                  option:unwrap-or (get states :right-a?) false
               set!
                 .-innerText $ unsafe-coerce (js/document.querySelector |pre) JsObject
                 format-cirru-edn $ {} (:states states) (:delta delta)
@@ -66,7 +69,7 @@
           :code $ quote
             defstruct %element (:props 'Dynamic) (:events 'Dynamic) (:children 'Dynamic)
           :examples $ []
-          :schema $ :: 'StructDef
+          :schema $ :: 'Enum
         |&c- $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn &c- (a b)
@@ -166,8 +169,11 @@
                 :pointermove $ fn (event)
                   let
                       move $ []
-                        - (unsafe-coerce (.-layerX event) Number) (nth @*left-origin 0)
-                        - (nth @*left-origin 1) (unsafe-coerce (.-layerY event) Number)
+                        -
+                          unsafe-coerce (.-layerX event) Number
+                          nth @*left-origin 0
+                        - (nth @*left-origin 1)
+                          unsafe-coerce (.-layerY event) Number
                     swap! *control-states assoc :left-move move
           :examples $ []
           :schema $ :: 'Dynamic
@@ -244,8 +250,11 @@
                 :pointermove $ fn (event)
                   let
                       move $ []
-                        - (unsafe-coerce (.-layerX event) Number) (nth @*right-origin 0)
-                        - (nth @*right-origin 1) (unsafe-coerce (.-layerY event) Number)
+                        -
+                          unsafe-coerce (.-layerX event) Number
+                          nth @*right-origin 0
+                        - (nth @*right-origin 1)
+                          unsafe-coerce (.-layerY event) Number
                     ; js/console.log "|moving to" move
                     swap! *control-states assoc :right-move move
           :examples $ []
@@ -260,14 +269,20 @@
                   states $ deref *control-states
                 f elapsed (assoc states :shift? shift?)
                   {}
-                    :left-move $ &c- (option:unwrap-or (get states :left-move) zero) (option:unwrap-or (get @*prev-control-states :left-move) zero)
-                    :right-move $ &c- (option:unwrap-or (get states :right-move) zero) (option:unwrap-or (get @*prev-control-states :right-move) zero)
+                    :left-move $ &c-
+                      option:unwrap-or (get states :left-move) zero
+                      option:unwrap-or (get @*prev-control-states :left-move) zero
+                    :right-move $ &c-
+                      option:unwrap-or (get states :right-move) zero
+                      option:unwrap-or (get @*prev-control-states :right-move) zero
                 reset! *last-tick now
                 reset! *prev-control-states $ {}
                   :left-move $ option:unwrap-or (get states :left-move) zero
                   :right-move $ option:unwrap-or (get states :right-move) zero
                 if
-                  and (option:unwrap-or (get states :left-a?) false) (option:unwrap-or (get states :right-a?) false)
+                  and
+                    option:unwrap-or (get states :left-a?) false
+                    option:unwrap-or (get states :right-a?) false
                   try-fullscreen!
               reset! *timeout-loop $ js/setTimeout
                 fn () $ reset! *raq-loop
