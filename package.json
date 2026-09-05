@@ -7,7 +7,7 @@
     "release": "yarn vite build --base=./"
   },
   "devDependencies": {
-    "@calcit/procs": "^0.13.29",
+    "@calcit/procs": "0.13.77",
     "bottom-tip": "^0.1.5",
     "vite": "^5.2.6"
   }
