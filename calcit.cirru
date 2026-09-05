@@ -6,22 +6,22 @@
       :modules $ []
       :type-slots $ {}
   :files $ {}
-    |touch-control.app.config $ %{} 'FileEntry
+    'touch-control.app.config $ %{} 'FileEntry
       :defs $ {}
-        |dev? $ %{} 'CodeEntry (:doc |)
+        'dev? $ %{} 'CodeEntry (:doc |)
           :code $ quote (def dev? true)
           :examples $ []
           :schema $ :: 'Dynamic
-        |site $ %{} 'CodeEntry (:doc |)
+        'site $ %{} 'CodeEntry (:doc |)
           :code $ quote
             def site $ {} (:dev-ui |http://localhost:8100/main-fonts.css) (:release-ui |http://cdn.tiye.me/favored-fonts/main-fonts.css) (:cdn-url |http://cdn.tiye.me/calcit-workflow/) (:title |Calcit) (:icon |http://cdn.tiye.me/logo/mvc-works.png) (:storage-key |workflow)
           :examples $ []
           :schema $ :: 'Dynamic
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote (ns touch-control.app.config)
-    |touch-control.app.main $ %{} 'FileEntry
+    'touch-control.app.main $ %{} 'FileEntry
       :defs $ {}
-        |main! $ %{} 'CodeEntry (:doc |)
+        'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn main! () (load-console-formatter!)
               println "|Running mode:" $ if config/dev? |dev |release
@@ -29,12 +29,12 @@
               start-control-loop! 300 $ fn (elapsed states delta) (show-data! elapsed states delta)
           :examples $ []
           :schema $ :: 'Dynamic
-        |mount-target $ %{} 'CodeEntry (:doc |)
+        'mount-target $ %{} 'CodeEntry (:doc |)
           :code $ quote
             def mount-target $ .!querySelector js/document |.app
           :examples $ []
           :schema $ :: 'Dynamic
-        |reload! $ %{} 'CodeEntry (:doc |)
+        'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn reload! () $ if (nil? build-errors)
               do
@@ -44,14 +44,14 @@
               hud! |error build-errors
           :examples $ []
           :schema $ :: 'Dynamic
-        |show-data! $ %{} 'CodeEntry (:doc |)
+        'show-data! $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn show-data! (elapsed states delta)
               println |showing elapsed
                 option:unwrap-or (get states :left-move) ([] 0 0)
                 option:unwrap-or (get states :right-move) ([] 0 0)
-                (option:unwrap-or (get states :left-a?) false)
-                (option:unwrap-or (get states :right-a?) false)
+                option:unwrap-or (get states :left-a?) false
+                option:unwrap-or (get states :right-a?) false
               set!
                 .-innerText $ unsafe-coerce (js/document.querySelector |pre) JsObject
                 format-cirru-edn $ {} (:states states) (:delta delta)
@@ -63,14 +63,14 @@
             touch-control.core :refer $ render-control! start-control-loop! clear-control-loop! replace-control-loop!
             |./calcit.build-errors :default build-errors
             |bottom-tip :default hud!
-    |touch-control.core $ %{} 'FileEntry
+    'touch-control.core $ %{} 'FileEntry
       :defs $ {}
-        |%element $ %{} 'CodeEntry (:doc |)
+        '%element $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defstruct %element (:props 'Dynamic) (:events 'Dynamic) (:children 'Dynamic)
           :examples $ []
           :schema $ :: 'Enum
-        |&c- $ %{} 'CodeEntry (:doc |)
+        '&c- $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn &c- (a b)
               let-sugar
@@ -80,11 +80,11 @@
                 [] (- x1 x2) (- y1 y2)
           :examples $ []
           :schema $ :: 'Dynamic
-        |*container $ %{} 'CodeEntry (:doc |)
+        '*container $ %{} 'CodeEntry (:doc |)
           :code $ quote (defatom *container nil)
           :examples $ []
           :schema $ :: 'Dynamic
-        |*control-states $ %{} 'CodeEntry (:doc |)
+        '*control-states $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defatom *control-states $ {} (:left-a? false) (:left-b? false) (:right-a? false) (:right-b? false)
               :left-move $ [] 0 0
@@ -93,32 +93,32 @@
               :right-prev $ []
           :examples $ []
           :schema $ :: 'Dynamic
-        |*last-tick $ %{} 'CodeEntry (:doc |)
+        '*last-tick $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            defatom *last-tick $ js/performance.now
+            defatom *last-tick $ unsafe-coerce (js/performance.now) Number
           :examples $ []
           :schema $ :: 'Dynamic
-        |*left-origin $ %{} 'CodeEntry (:doc |)
+        '*left-origin $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defatom *left-origin $ [] 0 0
           :examples $ []
           :schema $ :: 'Dynamic
-        |*prev-control-states $ %{} 'CodeEntry (:doc |)
+        '*prev-control-states $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defatom *prev-control-states $ {}
               :left-move $ [] 0 0
               :right-move $ [] 0 0
           :examples $ []
           :schema $ :: 'Dynamic
-        |*raq-loop $ %{} 'CodeEntry (:doc |)
+        '*raq-loop $ %{} 'CodeEntry (:doc |)
           :code $ quote (defatom *raq-loop nil)
           :examples $ []
           :schema $ :: 'Dynamic
-        |*right-origin $ %{} 'CodeEntry (:doc |)
+        '*right-origin $ %{} 'CodeEntry (:doc |)
           :code $ quote (defatom *right-origin zero)
           :examples $ []
           :schema $ :: 'Dynamic
-        |*shift-listener $ %{} 'CodeEntry (:doc |)
+        '*shift-listener $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defatom *shift-listener $ do
               js/window.addEventListener |keydown $ fn (event)
@@ -134,16 +134,16 @@
               , false
           :examples $ []
           :schema $ :: 'Dynamic
-        |*timeout-loop $ %{} 'CodeEntry (:doc |)
+        '*timeout-loop $ %{} 'CodeEntry (:doc |)
           :code $ quote (defatom *timeout-loop nil)
           :examples $ []
           :schema $ :: 'Dynamic
-        |clear-control-loop! $ %{} 'CodeEntry (:doc |)
+        'clear-control-loop! $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn clear-control-loop! () (js/clearTimeout @*timeout-loop) (js/cancelAnimationFrame @*raq-loop)
           :examples $ []
           :schema $ :: 'Dynamic
-        |connect-state $ %{} 'CodeEntry (:doc |)
+        'connect-state $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn connect-state (field)
               {}
@@ -151,13 +151,13 @@
                 :pointerup $ fn (event) (; js/console.log |up event) (swap! *control-states assoc field false)
           :examples $ []
           :schema $ :: 'Dynamic
-        |div $ %{} 'CodeEntry (:doc |)
+        'div $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn div (props events & children)
               %{} %element (:props props) (:events events) (:children children)
           :examples $ []
           :schema $ :: 'Dynamic
-        |left-events $ %{} 'CodeEntry (:doc |)
+        'left-events $ %{} 'CodeEntry (:doc |)
           :code $ quote
             def left-events $ let
                 on-leave $ fn (event) (swap! *control-states assoc :left-move zero) (swap! *prev-control-states assoc :left-move zero)
@@ -171,13 +171,14 @@
                       move $ []
                         -
                           unsafe-coerce (.-layerX event) Number
-                          nth @*left-origin 0
-                        - (nth @*left-origin 1)
+                          option:unwrap-or (nth @*left-origin 0) 0
+                        -
+                          option:unwrap-or (nth @*left-origin 1) 0
                           unsafe-coerce (.-layerY event) Number
                     swap! *control-states assoc :left-move move
           :examples $ []
           :schema $ :: 'Dynamic
-        |render-control! $ %{} 'CodeEntry (:doc |)
+        'render-control! $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn render-control! ()
               if (some? @*container) (.!remove @*container)
@@ -217,7 +218,7 @@
                 reset! *container dom
           :examples $ []
           :schema $ :: 'Dynamic
-        |render-dom! $ %{} 'CodeEntry (:doc |)
+        'render-dom! $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn render-dom! (el parent)
               let
@@ -233,12 +234,12 @@
                 .!appendChild parent div
           :examples $ []
           :schema $ :: 'Dynamic
-        |replace-control-loop! $ %{} 'CodeEntry (:doc |)
+        'replace-control-loop! $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn replace-control-loop! (duration f) (clear-control-loop!) (start-control-loop! duration f)
           :examples $ []
           :schema $ :: 'Dynamic
-        |right-events $ %{} 'CodeEntry (:doc |)
+        'right-events $ %{} 'CodeEntry (:doc |)
           :code $ quote
             def right-events $ let
                 on-enter $ fn (event)
@@ -252,14 +253,15 @@
                       move $ []
                         -
                           unsafe-coerce (.-layerX event) Number
-                          nth @*right-origin 0
-                        - (nth @*right-origin 1)
+                          option:unwrap-or (nth @*right-origin 0) 0
+                        -
+                          option:unwrap-or (nth @*right-origin 1) 0
                           unsafe-coerce (.-layerY event) Number
                     ; js/console.log "|moving to" move
                     swap! *control-states assoc :right-move move
           :examples $ []
           :schema $ :: 'Dynamic
-        |start-control-loop! $ %{} 'CodeEntry (:doc |)
+        'start-control-loop! $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn start-control-loop! (duration f)
               let
@@ -290,12 +292,12 @@
                 , duration
           :examples $ []
           :schema $ :: 'Dynamic
-        |try-fullscreen! $ %{} 'CodeEntry (:doc |)
+        'try-fullscreen! $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn try-fullscreen! () $ if (not= js/window.innerHeight js/screen.height) (js/document.documentElement.requestFullscreen)
           :examples $ []
           :schema $ :: 'Dynamic
-        |zero $ %{} 'CodeEntry (:doc |)
+        'zero $ %{} 'CodeEntry (:doc |)
           :code $ quote
             def zero $ [] 0 0
           :examples $ []

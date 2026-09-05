@@ -10,29 +10,36 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
-    - uses: actions/setup-node@v6
+    - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
       with:
-        node-version: 24
+        node-version: 22
 
-    - run: corepack enable && corepack prepare yarn@4.12.0 --activate
+    - name: Enable Corepack
+      run: |
+        corepack enable
+        corepack prepare yarn@4.12.0 --activate
+        yarn --version
 
-    - uses: calcit-lang/setup-calcit@3b5843cb725963bb4ee158cfe49dad877134963e
+    - uses: calcit-lang/setup-calcit@704b3f5cd6f9ce3bd1e0c926dbdd1d181adb8180 # v1.4.0
       with:
         tools: calcit,caps
 
-    - name: validate snapshot
+    - name: Validate Calcit project
       run: |
-        caps --ci
+        caps --strict --ci
+        yarn install --immutable
+        caps verify --toolchain
         calcit calcit.cirru edit format
         git diff --exit-code -- calcit.cirru
         calcit calcit.cirru --check-only
+        calcit calcit.cirru test
 
-    - name: "compiles to js"
-      run: >
+    - name: Compile to JavaScript
+      run: |
         calcit calcit.cirru js
-        && yarn install --immutable && yarn vite build --base=./
+        yarn vite build --base=./
 
     - name: Deploy to server
       id: deploy
