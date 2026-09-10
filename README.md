@@ -27,7 +27,7 @@ touch-control.core/clear-control-loop!
 touch-control.core/replace-control-loop! 300 $ fn (elapsed states delta)
 ```
 
-States:
+States are returned as the typed `ControlState` struct:
 
 ```cirru
 :left-move $ [] 0 0
@@ -42,7 +42,7 @@ States:
 :shift? false
 ```
 
-Delta:
+Delta is returned as the typed `ControlDelta` struct:
 
 ```cirru
 :left-move $ [] 0 0
@@ -65,7 +65,7 @@ https://github.com/calcit-lang/respo-calcit-workflow
 
 ### Compatibility and validation
 
-Touch Control 0.0.19 targets Calcit and `@calcit/procs` 0.13.77. Validate the
+Touch Control 0.0.20 targets Calcit and `@calcit/procs` 0.14.7. Validate the
 exact toolchain, Snapshot, static-quality budget, unit behavior, and production
 bundle with:
 
