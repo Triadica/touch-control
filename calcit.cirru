@@ -1,5 +1,5 @@
 
-{} (:about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `calcit query` to inspect and `calcit edit`/`calcit tree` to modify. Run `calcit docs agents --full` first. Manual edits must follow format and schema conventions, then run `calcit edit format`.") (:package |touch-control)
+{} (:about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `calcit query` to inspect and `calcit edit`/`calcit tree` to modify. Run `calcit docs agents --contract` before mutations; use `--full` for first orientation or changed contract digest. Manual edits must follow format and schema conventions, then run `calcit edit format`.") (:package |touch-control)
   :entries $ {}
     :default $ {} (:description |) (:init-fn 'touch-control.app.main/main!) (:mode :native) (:reload-fn 'touch-control.app.main/reload!)
       :feature-policy $ {}
@@ -298,7 +298,7 @@
               unsafe-coerce (host :body) DomElementHost
           :examples $ []
           :schema $ :: 'Fn
-            {} (:return 'DomElementHost)
+            {} (:return 'touch-control.core/DomElementHost)
               :args $ []
               :features $ #{} :js-ffi
         'install-shift-listeners! $ %{} 'CodeEntry (:doc |)
@@ -450,7 +450,7 @@
                 , div
           :examples $ []
           :schema $ :: 'Fn
-            {} (:return 'DomElementHost)
+            {} (:return 'touch-control.core/DomElementHost)
               :args $ [] 'touch-control.core/%element 'DomElementHost
               :features $ #{} :js-ffi
         'replace-control-loop! $ %{} 'CodeEntry (:doc |)
