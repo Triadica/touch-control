@@ -3,10 +3,7 @@
   :about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `calcit query` to inspect and `calcit edit`/`calcit tree` to modify. Run `calcit docs agents --contract` before mutations; use `--full` for first orientation or changed contract digest. Manual edits must follow format and schema conventions, then run `calcit edit format`."
   :package |touch-control
   :entries $ {} $ :default
-    {} (:description |)
-      :init-fn 'touch-control.app.main/main!
-      :mode :native
-      :reload-fn 'touch-control.app.main/reload!
+    {} (:description |) (:init-fn 'touch-control.app.main/main!) (:mode :native) (:reload-fn 'touch-control.app.main/reload!)
       :feature-policy $ {}
       :modules $ []
       :type-slots $ {}
@@ -19,13 +16,7 @@
           :schema $ :: 'Bool
         'site $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def site
-            {}
-              :dev-ui |http://localhost:8100/main-fonts.css
-              :release-ui |http://cdn.tiye.me/favored-fonts/main-fonts.css
-              :cdn-url |http://cdn.tiye.me/calcit-workflow/
-              :title |Calcit
-              :icon |http://cdn.tiye.me/logo/mvc-works.png
-              :storage-key |workflow
+            {} (:dev-ui |http://localhost:8100/main-fonts.css) (:release-ui |http://cdn.tiye.me/favored-fonts/main-fonts.css) (:cdn-url |http://cdn.tiye.me/calcit-workflow/) (:title |Calcit) (:icon |http://cdn.tiye.me/logo/mvc-works.png) (:storage-key |workflow)
           :examples $ []
           :schema $ :: 'Map 'Tag 'String
       :ns $ %{} 'NsEntry (:doc |)
@@ -33,8 +24,7 @@
     'touch-control.app.main $ %{} 'FileEntry
       :defs $ {}
         'main! $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn main! ()
-            load-console-formatter!
+          :code $ quote $ defn main! () (load-console-formatter!)
             println "|Running mode:" $ if config/dev? |dev |release
             render-control!
             start-control-loop! 300 $ fn (elapsed states delta) (show-data! elapsed states delta)
@@ -62,9 +52,7 @@
           :code $ quote $ defn show-data! (elapsed states delta)
             println |showing elapsed (:left-move states) (:right-move states) (:left-a? states) (:right-a? states)
             set!
-              .-innerText $ unsafe-coerce
-                js/document.querySelector |pre
-                , touch-control.core/TextElementHost
+              .-innerText $ unsafe-coerce (js/document.querySelector |pre) touch-control.core/TextElementHost
               format-cirru-edn $ {} (:states states) (:delta delta)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
@@ -72,8 +60,7 @@
             :features $ #{} :js-ffi
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns touch-control.app.main
-          :require
-            touch-control.app.config :as config
+          :require (touch-control.app.config :as config)
             touch-control.core :refer $ render-control! start-control-loop! clear-control-loop! replace-control-loop!
             |./calcit.build-errors :default build-errors
             |bottom-tip :default hud!
@@ -101,15 +88,13 @@
           :schema $ :: 'Fn $ {}
             :args $ [] (:: 'List 'Number) (:: 'List 'Number)
             :return $ :: 'List 'Number
-          :tests $ [] $ %{} 'TestEntry
-            :name |subtracts-coordinates
+          :tests $ [] $ %{} 'TestEntry (:name |subtracts-coordinates)
             :code $ quote $ assert |subtracts-coordinates
               = ([] 2 3)
                 &c- ([] 5 7) ([] 3 4)
             :tags $ #{} :unit
         '*container $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *container
-            create-container-placeholder
+          :code $ quote $ defatom *container (create-container-placeholder)
           :examples $ []
           :schema $ :: 'Ref 'JsObject
         '*control-states $ %{} 'CodeEntry (:doc |)
@@ -139,8 +124,7 @@
           :examples $ []
           :schema $ :: 'Ref $ :: 'List 'Number
         '*shift-listener $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *shift-listener
-            install-shift-listeners!
+          :code $ quote $ defatom *shift-listener (install-shift-listeners!)
           :examples $ []
           :schema $ :: 'Ref 'Bool
         '*timeout-loop $ %{} 'CodeEntry (:doc |)
@@ -162,8 +146,7 @@
           :examples $ []
           :schema $ :: 'StructDef
         'DocumentHost $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ deftrait DocumentHost (:body 'DomElementHost)
-            :document-element 'FullscreenElementHost
+          :code $ quote $ deftrait DocumentHost (:body 'DomElementHost) (:document-element 'FullscreenElementHost)
             .query-selector! $ :: 'Fn $ {}
               :args $ [] 'DocumentHost 'String
               :return 'JsObject
@@ -172,9 +155,7 @@
               :return 'DomElementHost
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
-            :names $ {} (:body |body) (:create-element! |createElement)
-              :document-element |documentElement
-              :query-selector! |querySelector
+            :names $ {} (:body |body) (:create-element! |createElement) (:document-element |documentElement) (:query-selector! |querySelector)
           :schema $ :: 'Trait
         'DomElementHost $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait DomElementHost
@@ -193,10 +174,7 @@
               :return 'Unit
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
-            :names $ {}
-              :add-event-listener! |addEventListener
-              :append-child! |appendChild
-              :remove! |remove
+            :names $ {} (:add-event-listener! |addEventListener) (:append-child! |appendChild) (:remove! |remove)
           :schema $ :: 'Trait
         'FullscreenElementHost $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait FullscreenElementHost
@@ -241,14 +219,10 @@
               :return 'Unit
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
-            :names $ {}
-              :add-keyboard-listener! |addEventListener
-              :inner-height |innerHeight
+            :names $ {} (:add-keyboard-listener! |addEventListener) (:inner-height |innerHeight)
           :schema $ :: 'Trait
         'clear-control-loop! $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn clear-control-loop! () (js/clearTimeout @*timeout-loop)
-            js/cancelAnimationFrame @*raq-loop
-            , &unit
+          :code $ quote $ defn clear-control-loop! () (js/clearTimeout @*timeout-loop) (js/cancelAnimationFrame @*raq-loop) &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -256,10 +230,8 @@
         'connect-state $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn connect-state (field)
             {}
-              :pointerdown $ fn (event) (; js/console.log |down event)
-                set-button-state! field true
-              :pointerup $ fn (event) (; js/console.log |up event)
-                set-button-state! field false
+              :pointerdown $ fn (event) (; js/console.log |down event) (set-button-state! field true)
+              :pointerup $ fn (event) (; js/console.log |up event) (set-button-state! field false)
           :examples $ []
           :schema $ :: 'Fn $ {}
             :args $ [] 'Tag
@@ -279,9 +251,7 @@
           :code $ quote $ defn div (props events & children)
             %{} %element (:props props) (:events events) (:children children)
           :examples $ []
-          :schema $ :: 'Fn $ {}
-            :rest 'touch-control.core/%element
-            :return 'touch-control.core/%element
+          :schema $ :: 'Fn $ {} (:rest 'touch-control.core/%element) (:return 'touch-control.core/%element)
             :args $ [] (:: 'Map 'Tag 'String)
               :: 'Map 'Tag $ :: 'Fn $ {} (:return 'Unit)
                 :args $ [] 'PointerEventHost
@@ -291,8 +261,7 @@
                 host $ unsafe-coerce js/document DocumentHost
               unsafe-coerce (host :body) DomElementHost
           :examples $ []
-          :schema $ :: 'Fn $ {}
-            :return 'touch-control.core/DomElementHost
+          :schema $ :: 'Fn $ {} (:return 'touch-control.core/DomElementHost)
             :args $ []
             :features $ #{} :js-ffi
         'install-shift-listeners! $ %{} 'CodeEntry (:doc |)
@@ -324,8 +293,7 @@
         'left-events $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def left-events
             let
-                on-leave $ fn (event) (swap! *control-states assoc :left-move zero)
-                  swap! *prev-control-states assoc :left-move zero
+                on-leave $ fn (event) (swap! *control-states assoc :left-move zero) (swap! *prev-control-states assoc :left-move zero)
                 on-enter $ fn (event)
                   reset! *left-origin $ [] (pointer-x event) (pointer-y event)
                   swap! *control-states assoc :left-move zero
@@ -343,9 +311,7 @@
               :args $ [] 'PointerEventHost
         'performance-now $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn performance-now ()
-            unsafe-coerce
-              js/performance.now
-              , Number
+            unsafe-coerce (js/performance.now) Number
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
@@ -376,8 +342,7 @@
             :args $ [] 'JsObject
             :features $ #{} :js-ffi
         'render-control! $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn render-control! ()
-            remove-container! @*container
+          :code $ quote $ defn render-control! () (remove-container! @*container)
             let
                 panel $ div
                   {} $ :className |touch-control
@@ -433,14 +398,11 @@
               .append-child! parent div
               , div
           :examples $ []
-          :schema $ :: 'Fn $ {}
-            :return 'touch-control.core/DomElementHost
+          :schema $ :: 'Fn $ {} (:return 'touch-control.core/DomElementHost)
             :args $ [] 'touch-control.core/%element 'DomElementHost
             :features $ #{} :js-ffi
         'replace-control-loop! $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn replace-control-loop! (duration f)
-            clear-control-loop!
-            start-control-loop! duration f
+          :code $ quote $ defn replace-control-loop! (duration f) (clear-control-loop!) (start-control-loop! duration f)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ [] 'Number $ :: 'Fn
@@ -454,8 +416,7 @@
                   reset! *right-origin $ [] (pointer-x event) (pointer-y event)
                   swap! *control-states assoc :right-move zero
                   swap! *prev-control-states assoc :right-move zero
-                on-leave $ fn (event) (swap! *control-states assoc :right-move zero)
-                  swap! *prev-control-states assoc :right-move zero
+                on-leave $ fn (event) (swap! *control-states assoc :right-move zero) (swap! *prev-control-states assoc :right-move zero)
               {} (:pointerdown on-enter) (:pointerup on-leave) (:mouseenter on-enter) (:mouseleave on-leave)
                 :pointermove $ fn (event)
                   let
@@ -488,10 +449,8 @@
                 shift? @*shift-listener
                 states @*control-states
                 delta $ %{} ControlDelta
-                  :left-move $ &c- (:left-move states)
-                    :left-move @*prev-control-states
-                  :right-move $ &c- (:right-move states)
-                    :right-move @*prev-control-states
+                  :left-move $ &c- (:left-move states) (:left-move @*prev-control-states)
+                  :right-move $ &c- (:right-move states) (:right-move @*prev-control-states)
               f elapsed (assoc states :shift? shift?) delta
               reset! *last-tick now
               reset! *prev-control-states $ %{} ControlDelta
@@ -503,8 +462,7 @@
             reset! *timeout-loop $ unsafe-coerce
               js/setTimeout
                 fn () $ reset! *raq-loop $ unsafe-coerce
-                  js/requestAnimationFrame $ fn (p)
-                    start-control-loop! duration f
+                  js/requestAnimationFrame $ fn (p) (start-control-loop! duration f)
                   , Number
                 , duration
               , Number
@@ -522,9 +480,7 @@
                 document-host $ unsafe-coerce js/document DocumentHost
               if
                 not= (window-host :inner-height) (screen-host :height)
-                .request-fullscreen! $ unsafe-coerce
-                  document-host :document-element
-                  , FullscreenElementHost
+                .request-fullscreen! $ unsafe-coerce (document-host :document-element) FullscreenElementHost
               , &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
