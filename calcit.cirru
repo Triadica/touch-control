@@ -5,7 +5,7 @@
   :entries $ {} $ :default
     {} (:description |) (:init-fn 'touch-control.app.main/main!) (:mode :native) (:reload-fn 'touch-control.app.main/reload!)
       :feature-policy $ {}
-      :modules $ []
+      :modules $ [] |js-ffi/
       :type-slots $ {}
   :files $ {}
     'touch-control.app.config $ %{} 'FileEntry
@@ -33,9 +33,10 @@
             :args $ []
             :features $ #{} :js-ffi
         'mount-target $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ def mount-target (.!querySelector js/document |.app)
+          :code $ quote $ def mount-target
+            option:unwrap $ browser/query-selector |.app
           :examples $ []
-          :schema $ :: 'touch-control.core/DomElementHost
+          :schema $ :: 'js-ffi.browser/DomElementHost
         'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reload! ()
             if (nil? build-errors)
@@ -51,8 +52,8 @@
         'show-data! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn show-data! (elapsed states delta)
             println |showing elapsed (:left-move states) (:right-move states) (:left-a? states) (:right-a? states)
-            set!
-              .-innerText $ unsafe-coerce (js/document.querySelector |pre) touch-control.core/TextElementHost
+            browser/element-set-text-content!
+              option:unwrap $ browser/query-selector |pre
               format-cirru-edn $ {} (:states states) (:delta delta)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
@@ -64,6 +65,8 @@
             touch-control.core :refer $ render-control! start-control-loop! clear-control-loop! replace-control-loop!
             |./calcit.build-errors :default build-errors
             |bottom-tip :default hud!
+            js-ffi.browser :as browser
+            js-ffi.shared :as shared
     'touch-control.core $ %{} 'FileEntry
       :defs $ {}
         '%element $ %{} 'CodeEntry (:doc |)
@@ -71,7 +74,7 @@
             :props $ :: 'Map 'Tag 'String
             :events $ :: 'Map 'Tag $ :: 'Fn
               {}
-                :args $ [] 'PointerEventHost
+                :args $ [] 'js-ffi.browser/PointerEventHost
                 :return 'Unit
                 :features $ #{} :js-ffi
             :children $ :: 'List 'touch-control.core/%element
@@ -96,7 +99,7 @@
         '*container $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defatom *container (create-container-placeholder)
           :examples $ []
-          :schema $ :: 'Ref 'JsObject
+          :schema $ :: 'Ref 'js-ffi.browser/DomElementHost
         '*control-states $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defatom *control-states
             %{} ControlState (:left-a? false) (:left-b? false) (:right-a? false) (:right-b? false) (:shift? false) (:left-move zero) (:left-prev zero) (:right-move zero) (:right-prev zero)
@@ -145,84 +148,8 @@
             :right-prev $ :: 'List 'Number
           :examples $ []
           :schema $ :: 'StructDef
-        'DocumentHost $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ deftrait DocumentHost (:body 'DomElementHost) (:document-element 'FullscreenElementHost)
-            .query-selector! $ :: 'Fn $ {}
-              :args $ [] 'DocumentHost 'String
-              :return 'JsObject
-            .create-element! $ :: 'Fn $ {}
-              :args $ [] 'DocumentHost 'String
-              :return 'DomElementHost
-          :examples $ []
-          :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
-            :names $ {} (:body |body) (:create-element! |createElement) (:document-element |documentElement) (:query-selector! |querySelector)
-          :schema $ :: 'Trait
-        'DomElementHost $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ deftrait DomElementHost
-            .add-event-listener! $ :: 'Fn $ {}
-              :args $ [] 'DomElementHost 'String
-                :: 'Fn $ {}
-                  :args $ [] 'PointerEventHost
-                  :return 'Unit
-                , 'Bool
-              :return 'Unit
-            .append-child! $ :: 'Fn $ {}
-              :args $ [] 'DomElementHost 'DomElementHost
-              :return 'Unit
-            .remove! $ :: 'Fn $ {}
-              :args $ [] 'DomElementHost
-              :return 'Unit
-          :examples $ []
-          :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
-            :names $ {} (:add-event-listener! |addEventListener) (:append-child! |appendChild) (:remove! |remove)
-          :schema $ :: 'Trait
-        'FullscreenElementHost $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ deftrait FullscreenElementHost
-            .request-fullscreen! $ :: 'Fn $ {}
-              :args $ [] 'FullscreenElementHost
-              :return 'Unit
-          :examples $ []
-          :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
-            :names $ {} $ :request-fullscreen! |requestFullscreen
-          :schema $ :: 'Trait
-        'KeyboardEventHost $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ deftrait KeyboardEventHost (:shift-key 'Bool)
-          :examples $ []
-          :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
-            :names $ {} $ :shift-key |shiftKey
-          :schema $ :: 'Trait
-        'PointerEventHost $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ deftrait PointerEventHost (:layer-x 'Number) (:layer-y 'Number)
-          :examples $ []
-          :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
-            :names $ {} (:layer-x |layerX) (:layer-y |layerY)
-          :schema $ :: 'Trait
-        'ScreenHost $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ deftrait ScreenHost (:height 'Number)
-          :examples $ []
-          :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
-            :names $ {} $ :height |height
-          :schema $ :: 'Trait
-        'TextElementHost $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ deftrait TextElementHost (:inner-text 'String)
-          :examples $ []
-          :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
-            :names $ {} $ :inner-text |innerText
-          :schema $ :: 'Trait
-        'WindowHost $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ deftrait WindowHost (:inner-height 'Number)
-            .add-keyboard-listener! $ :: 'Fn $ {}
-              :args $ [] 'WindowHost 'String $ :: 'Fn
-                {}
-                  :args $ [] 'KeyboardEventHost
-                  :return 'Unit
-              :return 'Unit
-          :examples $ []
-          :ffi $ {} (:backend :js) (:kind :external-object) (:target :browser)
-            :names $ {} (:add-keyboard-listener! |addEventListener) (:inner-height |innerHeight)
-          :schema $ :: 'Trait
         'clear-control-loop! $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn clear-control-loop! () (js/clearTimeout @*timeout-loop) (js/cancelAnimationFrame @*raq-loop) &unit
+          :code $ quote $ defn clear-control-loop! () (browser/clear-timeout! @*timeout-loop) (browser/cancel-animation-frame! @*raq-loop) &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -237,14 +164,11 @@
             :args $ [] 'Tag
             :return $ :: 'Map 'Tag $ :: 'Fn
               {} (:return 'Unit)
-                :args $ [] 'PointerEventHost
+                :args $ [] 'js-ffi.browser/PointerEventHost
         'create-container-placeholder $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn create-container-placeholder ()
-            let
-                document-host $ unsafe-coerce js/document DocumentHost
-              unsafe-coerce (.create-element! document-host |div) JsObject
+          :code $ quote $ defn create-container-placeholder () (browser/create-element |div)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'JsObject)
+          :schema $ :: 'Fn $ {} (:return 'js-ffi.browser/DomElementHost)
             :args $ []
             :features $ #{} :js-ffi
         'div $ %{} 'CodeEntry (:doc |)
@@ -254,23 +178,21 @@
           :schema $ :: 'Fn $ {} (:rest 'touch-control.core/%element) (:return 'touch-control.core/%element)
             :args $ [] (:: 'Map 'Tag 'String)
               :: 'Map 'Tag $ :: 'Fn $ {} (:return 'Unit)
-                :args $ [] 'PointerEventHost
+                :args $ [] 'js-ffi.browser/PointerEventHost
         'document-body $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn document-body ()
-            let
-                host $ unsafe-coerce js/document DocumentHost
-              unsafe-coerce (host :body) DomElementHost
+            option:unwrap $ browser/document-body
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'touch-control.core/DomElementHost)
+          :schema $ :: 'Fn $ {} (:return 'js-ffi.browser/DomElementHost)
             :args $ []
             :features $ #{} :js-ffi
         'install-shift-listeners! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn install-shift-listeners! ()
-            .add-keyboard-listener! (unsafe-coerce js/window WindowHost) |keydown $ fn (event)
+            browser/add-event-listener! |keydown $ fn (event)
               if
                 and (keyboard-shift? event) (not @*shift-listener)
                 reset! *shift-listener true
-            .add-keyboard-listener! (unsafe-coerce js/window WindowHost) |keyup $ fn (event)
+            browser/add-event-listener! |keyup $ fn (event)
               if
                 and
                   not $ keyboard-shift? event
@@ -284,8 +206,8 @@
         'keyboard-shift? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn keyboard-shift? (event)
             let
-                host $ unsafe-coerce event KeyboardEventHost
-              host :shift-key
+                host $ browser/keyboard-event-host event
+              host :shift-key?
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Bool)
             :args $ [] 'Dynamic
@@ -308,10 +230,9 @@
           :examples $ []
           :schema $ :: 'Map 'Tag $ :: 'Fn
             {} (:return 'Unit)
-              :args $ [] 'PointerEventHost
+              :args $ [] 'js-ffi.browser/PointerEventHost
         'performance-now $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn performance-now ()
-            unsafe-coerce (js/performance.now) Number
+          :code $ quote $ defn performance-now () (shared/performance-now)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
@@ -319,7 +240,7 @@
         'pointer-x $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn pointer-x (event)
             let
-                host $ unsafe-coerce event PointerEventHost
+                host $ browser/pointer-event-host event
               host :layer-x
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
@@ -328,18 +249,17 @@
         'pointer-y $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn pointer-y (event)
             let
-                host $ unsafe-coerce event PointerEventHost
+                host $ browser/pointer-event-host event
               host :layer-y
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ [] 'Dynamic
             :features $ #{} :js-ffi
         'remove-container! $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn remove-container! (value)
-            .remove! $ unsafe-coerce value DomElementHost
+          :code $ quote $ defn remove-container! (value) (browser/element-remove! value)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ [] 'JsObject
+            :args $ [] 'js-ffi.browser/DomElementHost
             :features $ #{} :js-ffi
         'render-control! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn render-control! () (remove-container! @*container)
@@ -376,7 +296,7 @@
                       {} $ :className "|right-b circle-button"
                       connect-state :right-b?
                 dom $ render-dom! panel $ document-body
-              reset! *container $ unsafe-coerce dom JsObject
+              reset! *container dom
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -384,22 +304,28 @@
         'render-dom! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn render-dom! (el parent)
             let
-                div $ unsafe-coerce
-                  .create-element! (unsafe-coerce js/document DocumentHost) |div
-                  , DomElementHost
+                div $ browser/create-element |div
                 props $ :props el
                 events $ :events el
                 children $ :children el
               &doseq (pair props)
-                let[] (k v) pair $ aset div (turn-string k) v
+                let[] (k v) pair $ browser/element-set-attribute! div (turn-string k) v
               &doseq (pair events)
-                let[] (k v) pair $ .add-event-listener! div (turn-string k) v false
+                let[] (k v) pair $ let
+                    handler $ unsafe-coerce v $ :: 'Fn
+                      {} (:return 'Unit)
+                        :args $ [] 'js-ffi.browser/PointerEventHost
+                  browser/element-add-event-listener! div (turn-string k)
+                    fn (event)
+                      hint-fn $ {} (:return 'Unit)
+                        :args $ [] 'js-ffi.browser/EventHost
+                      handler $ browser/pointer-event-host event
               &doseq (child children) (render-dom! child div)
-              .append-child! parent div
+              browser/append-child! parent div
               , div
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'touch-control.core/DomElementHost)
-            :args $ [] 'touch-control.core/%element 'DomElementHost
+          :schema $ :: 'Fn $ {} (:return 'js-ffi.browser/DomElementHost)
+            :args $ [] 'touch-control.core/%element 'js-ffi.browser/DomElementHost
             :features $ #{} :js-ffi
         'replace-control-loop! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn replace-control-loop! (duration f) (clear-control-loop!) (start-control-loop! duration f)
@@ -428,7 +354,7 @@
           :examples $ []
           :schema $ :: 'Map 'Tag $ :: 'Fn
             {} (:return 'Unit)
-              :args $ [] 'PointerEventHost
+              :args $ [] 'js-ffi.browser/PointerEventHost
         'set-button-state! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn set-button-state! (field value)
             cond
@@ -459,13 +385,10 @@
               if
                 and (:left-a? states) (:right-a? states)
                 try-fullscreen!
-            reset! *timeout-loop $ unsafe-coerce
-              js/setTimeout
-                fn () $ reset! *raq-loop $ unsafe-coerce
-                  js/requestAnimationFrame $ fn (p) (start-control-loop! duration f)
-                  , Number
+              reset! *timeout-loop $ browser/set-timeout!
+                fn () $ reset! *raq-loop $ browser/request-animation-frame!
+                  fn (p) (start-control-loop! duration f)
                 , duration
-              , Number
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ [] 'Number $ :: 'Fn
@@ -474,14 +397,10 @@
             :features $ #{} :js-ffi
         'try-fullscreen! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn try-fullscreen! ()
-            let
-                window-host $ unsafe-coerce js/window WindowHost
-                screen-host $ unsafe-coerce js/screen ScreenHost
-                document-host $ unsafe-coerce js/document DocumentHost
-              if
-                not= (window-host :inner-height) (screen-host :height)
-                .request-fullscreen! $ unsafe-coerce (document-host :document-element) FullscreenElementHost
-              , &unit
+            if
+              not= (browser/viewport-height) (browser/screen-height)
+              browser/element-request-fullscreen! $ option:unwrap $ browser/document-element
+            , &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -492,3 +411,4 @@
           :schema $ :: 'List 'Number
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns touch-control.core
+          :require (js-ffi.browser :as browser) (js-ffi.shared :as shared)
