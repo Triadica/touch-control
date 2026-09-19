@@ -5,14 +5,14 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
-"@calcit/procs@npm:0.15.2":
-  version: 0.15.2
-  resolution: "@calcit/procs@npm:0.15.2"
+"@calcit/procs@npm:0.17.0":
+  version: 0.17.0
+  resolution: "@calcit/procs@npm:0.17.0"
   dependencies:
     "@calcit/ternary-tree": "npm:0.0.26"
     "@cirru/parser.ts": "npm:^0.0.9"
     "@cirru/writer.ts": "npm:^0.1.9"
-  checksum: 10c0/ba1fb1161abd00a027a5a57daffed96fbeccbd725bcb26f5e5ee7ade89b229ff9e0aac2a363ed8d315ad941ecfaa17e892cf693742bf609ceb798f1a7eb4011a
+  checksum: 10c0/206b665880dfcac0441cc0db4eb1b56056b3474a0c628b946b6f6d38fca0ee5fc5c0150cd15dc481fbe5f0ae12e680838b23850b3464043ceec5cf128f5cdca9
   languageName: node
   linkType: hard
 
@@ -247,7 +247,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@quamolit/touch-control@workspace:."
   dependencies:
-    "@calcit/procs": "npm:0.15.2"
+    "@calcit/procs": "npm:0.17.0"
     bottom-tip: "npm:^0.1.5"
     vite: "npm:^5.2.6"
   languageName: unknown
