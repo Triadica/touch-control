@@ -65,7 +65,7 @@ https://github.com/calcit-lang/respo-calcit-workflow
 
 ### Compatibility and validation
 
-Touch Control 0.0.20 targets Calcit and `@calcit/procs` 0.14.7. Validate the
+Touch Control 0.0.22 targets Calcit and `@calcit/procs` 0.18.1 with js-ffi 0.1.35. Validate the
 exact toolchain, Snapshot, static-quality budget, unit behavior, and production
 bundle with:
 

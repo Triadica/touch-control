@@ -102,7 +102,7 @@
           :schema $ :: 'Ref 'js-ffi.browser/DomElementHost
         '*control-states $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defatom *control-states
-            %{} ControlState (:left-a? false) (:left-b? false) (:right-a? false) (:right-b? false) (:shift? false) (:left-move zero) (:left-prev zero) (:right-move zero) (:right-prev zero)
+            ControlState :left-a? false :left-b? false :right-a? false :right-b? false :shift? false :left-move zero :left-prev zero :right-move zero :right-prev zero
           :examples $ []
           :schema $ :: 'Ref 'ControlState
         '*last-tick $ %{} 'CodeEntry (:doc |)
@@ -114,8 +114,7 @@
           :examples $ []
           :schema $ :: 'Ref $ :: 'List 'Number
         '*prev-control-states $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *prev-control-states
-            %{} ControlDelta (:left-move zero) (:right-move zero)
+          :code $ quote $ defatom *prev-control-states (ControlDelta :left-move zero :right-move zero)
           :examples $ []
           :schema $ :: 'Ref 'ControlDelta
         '*raq-loop $ %{} 'CodeEntry (:doc |)
@@ -172,8 +171,7 @@
             :args $ []
             :features $ #{} :js-ffi
         'div $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn div (props events & children)
-            %{} %element (:props props) (:events events) (:children children)
+          :code $ quote $ defn div (props events & children) (%element :props props :events events :children children)
           :examples $ []
           :schema $ :: 'Fn $ {} (:rest 'touch-control.core/%element) (:return 'touch-control.core/%element)
             :args $ [] (:: 'Map 'Tag 'String)
@@ -210,7 +208,7 @@
               host :shift-key?
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Bool)
-            :args $ [] 'Dynamic
+            :args $ [] 'js-ffi.browser/EventHost
             :features $ #{} :js-ffi
         'left-events $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def left-events
@@ -244,7 +242,7 @@
               host :layer-x
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
-            :args $ [] 'Dynamic
+            :args $ [] 'js-ffi.browser/EventHost
             :features $ #{} :js-ffi
         'pointer-y $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn pointer-y (event)
@@ -253,7 +251,7 @@
               host :layer-y
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
-            :args $ [] 'Dynamic
+            :args $ [] 'js-ffi.browser/EventHost
             :features $ #{} :js-ffi
         'remove-container! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn remove-container! (value) (browser/element-remove! value)
