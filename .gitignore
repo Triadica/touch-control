@@ -8,5 +8,5 @@ node_modules/
 dist/
 
 .pnp.*
-.yarn/cache
+.yarn/
 install-state.gz
