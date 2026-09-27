@@ -65,7 +65,7 @@ https://github.com/calcit-lang/respo-calcit-workflow
 
 ### Compatibility and validation
 
-Touch Control 0.0.22 targets Calcit and `@calcit/procs` 0.18.1 with js-ffi 0.1.35. Validate the
+Touch Control 0.0.23 targets Calcit and `@calcit/procs` 0.24.3 with js-ffi 0.2.0. Validate the
 exact toolchain, Snapshot, static-quality budget, unit behavior, and production
 bundle with:
 
@@ -75,7 +75,7 @@ yarn install --immutable
 caps verify --toolchain
 calcit calcit.cirru edit format
 calcit calcit.cirru --check-only
-calcit calcit.cirru analyze dynamic-methods --max 0
+calcit calcit.cirru analyze dynamic-methods
 calcit calcit.cirru analyze quality --baseline config/calcit-quality.cirru
 calcit calcit.cirru test --tag unit --require-match --summary-only --format json
 calcit calcit.cirru js
