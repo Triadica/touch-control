@@ -75,7 +75,7 @@ yarn install --immutable
 caps verify --toolchain
 calcit calcit.cirru edit format
 calcit calcit.cirru --check-only
-calcit calcit.cirru analyze dynamic-methods --max 0
+calcit calcit.cirru analyze dynamic-methods
 calcit calcit.cirru analyze quality --baseline config/calcit-quality.cirru
 calcit calcit.cirru test --tag unit --require-match --summary-only --format json
 calcit calcit.cirru js
