@@ -3,7 +3,7 @@
   :about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `calcit query` to inspect and `calcit edit`/`calcit tree` to modify. Run `calcit docs agents --contract` before mutations; use `--full` for first orientation or changed contract digest. Manual edits must follow format and schema conventions, then run `calcit edit format`."
   :package |touch-control
   :entries $ {} $ :default
-    {} (:description |) (:init-fn 'touch-control.app.main/main!) (:mode :native) (:reload-fn 'touch-control.app.main/reload!)
+    {} (:description |) (:init-fn 'touch-control.app.main/main!) (:mode :js) (:reload-fn 'touch-control.app.main/reload!) (:target :browser)
       :feature-policy $ {}
       :modules $ [] |js-ffi/
       :type-slots $ {}
@@ -307,7 +307,9 @@
                 events $ :events el
                 children $ :children el
               &doseq (pair props)
-                let[] (k v) pair $ browser/element-set-attribute! div (turn-string k) v
+                let[] (k v) pair $ browser/element-set-attribute! div
+                  if (= k :className) |class $ turn-string k
+                  , v
               &doseq (pair events)
                 let[] (k v) pair $ let
                     handler $ unsafe-coerce v $ :: 'Fn
