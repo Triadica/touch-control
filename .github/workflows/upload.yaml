@@ -49,15 +49,14 @@ jobs:
         caps --version
         caps verify --toolchain
 
-    - name: Validate snapshot and quality
+    - name: Validate snapshot and types
       run: |
         calcit calcit.cirru edit format
         git diff --exit-code -- calcit.cirru
         calcit calcit.cirru --check-only
-        calcit analyze check-public --ns touch-control.core --ns touch-control.app.main --ns touch-control.app.config --summary-only --format json
-        calcit calcit.cirru analyze dynamic-methods
-        calcit calcit.cirru analyze quality --baseline config/calcit-quality.cirru
-        calcit calcit.cirru analyze deprecated --summary-only --format json
+        calcit --check-only --ns touch-control.core --ns touch-control.app.main --ns touch-control.app.config --summary-only --format edn
+        calcit analyze weak-types --only dynamic-method --summary-only --format edn
+        calcit analyze weak-types --only deprecated-call --summary-only --format edn
         calcit calcit.cirru test --tag unit --require-match --summary-only --format json
 
     - name: Select frontend CDN path

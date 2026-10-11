@@ -82,11 +82,7 @@
           :schema $ :: 'Enum
         '&c- $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn &c- (a b)
-            let-sugar
-                  [] x1 y1
-                  , a
-                ([] x2 y2) b
-              [] (- x1 x2) (- y1 y2)
+            let[] (x1 y1) a $ let[] (x2 y2) b $ [] (- x1 x2) (- y1 y2)
           :examples $ []
           :schema $ :: 'Fn $ {}
             :args $ [] (:: 'List 'Number) (:: 'List 'Number)
@@ -190,12 +186,14 @@
               if
                 and (keyboard-shift? event) (not @*shift-listener)
                 reset! *shift-listener true
+              , &unit
             browser/add-event-listener! |keyup $ fn (event)
               if
                 and
                   not $ keyboard-shift? event
                   , @*shift-listener
                 reset! *shift-listener false
+              , &unit
             , false
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Bool)
@@ -295,6 +293,7 @@
                       connect-state :right-b?
                 dom $ render-dom! panel $ document-body
               reset! *container dom
+              , &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -306,16 +305,16 @@
                 props $ :props el
                 events $ :events el
                 children $ :children el
-              &doseq (pair props)
-                let[] (k v) pair $ browser/element-set-attribute! div
-                  if (= k :className) |class $ turn-string k
-                  , v
-              &doseq (pair events)
-                let[] (k v) pair $ let
-                    handler $ unsafe-coerce v $ :: 'Fn
-                      {} (:return 'Unit)
-                        :args $ [] 'js-ffi.browser/PointerEventHost
-                  browser/element-add-event-listener! div (turn-string k)
+              &doseq
+                k $ keys props
+                browser/element-set-attribute! div
+                  if (= k :className) |class $ to-string k
+                  option:unwrap $ get props k
+              &doseq
+                k $ keys events
+                let
+                    handler $ option:unwrap $ get events k
+                  browser/element-add-event-listener! div (to-string k)
                     fn (event)
                       hint-fn $ {} (:return 'Unit)
                         :args $ [] 'js-ffi.browser/EventHost
@@ -364,6 +363,7 @@
               (= field :right-a?) (swap! *control-states assoc :right-a? value)
               (= field :right-b?) (swap! *control-states assoc :right-b? value)
               true $ raise $ str-spaced |unknown-control-field field
+            , &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ [] 'Tag 'Bool
@@ -386,9 +386,11 @@
                 and (:left-a? states) (:right-a? states)
                 try-fullscreen!
               reset! *timeout-loop $ browser/set-timeout!
-                fn () $ reset! *raq-loop $ browser/request-animation-frame!
-                  fn (p) (start-control-loop! duration f)
+                fn ()
+                  reset! *raq-loop $ browser/request-animation-frame! $ fn (p) (start-control-loop! duration f)
+                  , &unit
                 , duration
+              , &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ [] 'Number $ :: 'Fn

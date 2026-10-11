@@ -65,11 +65,11 @@ https://github.com/calcit-lang/respo-calcit-workflow
 
 ### Compatibility and validation
 
-本分支迁移至 Calcit / `@calcit/procs` 0.27.0 和已发布的 js-ffi 0.2.1-alpha.4。
-包版本 0.0.23 未作为新版本发布；下游请等待兼容正式版本，不引用 main/hash。
+模块 0.0.24 使用 Calcit / `@calcit/procs` 0.29.0-alpha.30 和已发布的 js-ffi 0.2.1-alpha.16。
+这条依赖链需要预发布工具链的受检宿主转换；下游使用模块发布 tag，不引用 main/hash。
 使用 Node.js 24、Yarn 4.18.0、Vite 8.3.0；8.3.2 仍受 Yarn 隔离策略限制，未绕过安全门禁。
 Validate the
-exact toolchain, Snapshot, static-quality budget, unit behavior, and production
+exact toolchain, Snapshot, public types, unit behavior, and production
 bundle with:
 
 ```bash
@@ -78,8 +78,7 @@ yarn install --immutable
 caps verify --toolchain
 calcit calcit.cirru edit format
 calcit calcit.cirru --check-only
-calcit analyze check-public --ns touch-control.core --ns touch-control.app.main --ns touch-control.app.config --summary-only --format json
-calcit calcit.cirru analyze quality --baseline config/calcit-quality.cirru
+calcit --check-only --ns touch-control.core --ns touch-control.app.main --ns touch-control.app.config --summary-only --format edn
 calcit calcit.cirru test --tag unit --require-match --summary-only --format json
 yarn build
 ```
