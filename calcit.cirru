@@ -93,40 +93,40 @@
                 &c- ([] 5 7) ([] 3 4)
             :tags $ #{} :unit
         '*container $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *container (create-container-placeholder)
+          :code $ quote $ defref *container (create-container-placeholder)
           :examples $ []
           :schema $ :: 'Ref 'js-ffi.browser/DomElementHost
         '*control-states $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *control-states
+          :code $ quote $ defref *control-states
             ControlState :left-a? false :left-b? false :right-a? false :right-b? false :shift? false :left-move zero :left-prev zero :right-move zero :right-prev zero
           :examples $ []
           :schema $ :: 'Ref 'ControlState
         '*last-tick $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *last-tick (performance-now)
+          :code $ quote $ defref *last-tick (performance-now)
           :examples $ []
           :schema $ :: 'Ref 'Number
         '*left-origin $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *left-origin ([] 0 0)
+          :code $ quote $ defref *left-origin ([] 0 0)
           :examples $ []
           :schema $ :: 'Ref $ :: 'List 'Number
         '*prev-control-states $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *prev-control-states (ControlDelta :left-move zero :right-move zero)
+          :code $ quote $ defref *prev-control-states (ControlDelta :left-move zero :right-move zero)
           :examples $ []
           :schema $ :: 'Ref 'ControlDelta
         '*raq-loop $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *raq-loop 0
+          :code $ quote $ defref *raq-loop 0
           :examples $ []
           :schema $ :: 'Ref 'Number
         '*right-origin $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *right-origin zero
+          :code $ quote $ defref *right-origin zero
           :examples $ []
           :schema $ :: 'Ref $ :: 'List 'Number
         '*shift-listener $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *shift-listener (install-shift-listeners!)
+          :code $ quote $ defref *shift-listener (install-shift-listeners!)
           :examples $ []
           :schema $ :: 'Ref 'Bool
         '*timeout-loop $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *timeout-loop 0
+          :code $ quote $ defref *timeout-loop 0
           :examples $ []
           :schema $ :: 'Ref 'Number
         'ControlDelta $ %{} 'CodeEntry (:doc |)
@@ -332,7 +332,7 @@
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ [] 'Number $ :: 'Fn
               {} (:return 'Unit)
-                :args $ [] 'Number 'ControlState 'ControlDelta
+                :args $ [] 'Number 'touch-control.core/ControlState 'touch-control.core/ControlDelta
             :features $ #{} :js-ffi
         'right-events $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def right-events
@@ -395,7 +395,7 @@
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ [] 'Number $ :: 'Fn
               {} (:return 'Unit)
-                :args $ [] 'Number 'ControlState 'ControlDelta
+                :args $ [] 'Number 'touch-control.core/ControlState 'touch-control.core/ControlDelta
             :features $ #{} :js-ffi
         'try-fullscreen! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn try-fullscreen! ()
