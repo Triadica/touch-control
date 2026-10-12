@@ -79,7 +79,7 @@
                 :features $ #{} :js-ffi
             :children $ :: 'List 'touch-control.core/%element
           :examples $ []
-          :schema $ :: 'Enum
+          :schema $ :: 'StructDef
         '&c- $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn &c- (a b)
             let[] (x1 y1) a $ let[] (x2 y2) b $ [] (- x1 x2) (- y1 y2)
@@ -216,7 +216,7 @@
                   reset! *left-origin $ [] (pointer-x event) (pointer-y event)
                   swap! *control-states assoc :left-move zero
                   swap! *prev-control-states assoc :left-move zero
-              {} (:pointerdown on-enter) (:pointerenter on-enter) (:mouseleave on-leave) (:pointerup on-leave)
+              {} (:pointerdown on-enter) (:pointerenter on-enter) (:pointerleave on-leave) (:pointerup on-leave)
                 :pointermove $ fn (event)
                   let
                       move $ []
@@ -342,7 +342,7 @@
                   swap! *control-states assoc :right-move zero
                   swap! *prev-control-states assoc :right-move zero
                 on-leave $ fn (event) (swap! *control-states assoc :right-move zero) (swap! *prev-control-states assoc :right-move zero)
-              {} (:pointerdown on-enter) (:pointerup on-leave) (:mouseenter on-enter) (:mouseleave on-leave)
+              {} (:pointerdown on-enter) (:pointerup on-leave) (:pointerenter on-enter) (:pointerleave on-leave)
                 :pointermove $ fn (event)
                   let
                       move $ []

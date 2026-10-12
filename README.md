@@ -65,7 +65,7 @@ https://github.com/calcit-lang/respo-calcit-workflow
 
 ### Compatibility and validation
 
-模块 0.0.25 使用稳定版 Calcit / `@calcit/procs` 0.29.0 和已发布的 js-ffi 0.2.1-alpha.16。
+模块 0.0.26 使用稳定版 Calcit / `@calcit/procs` 0.29.0 和正式版 js-ffi 0.2.1。
 受检宿主转换现已由稳定工具链支持；下游使用模块发布 tag，不引用 main/hash。
 使用 Node.js 24、Yarn 4.18.0、Vite 8.3.0；8.3.2 仍受 Yarn 隔离策略限制，未绕过安全门禁。
 Validate the
