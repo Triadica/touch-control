@@ -65,7 +65,8 @@ https://github.com/calcit-lang/respo-calcit-workflow
 
 ### Compatibility and validation
 
-模块 0.0.27 使用稳定版 Calcit / `@calcit/procs` 0.29.1 和正式版 js-ffi 0.2.1。
+模块 0.0.28 候选使用稳定版 Calcit / `@calcit/procs` 0.29.2 和正式版 js-ffi 0.2.2。
+与 Pointed Prompt 0.0.17 对齐同一正式 js-ffi，避免消费者的严格安装发生版本冲突。
 公开回调签名使用完整的 `touch-control.core/ControlState` 和
 `touch-control.core/ControlDelta` 类型名，保证跨模块回调的类型身份一致。
 受检宿主转换现已由稳定工具链支持；下游使用模块发布 tag，不引用 main/hash。
