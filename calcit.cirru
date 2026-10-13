@@ -45,6 +45,7 @@
                 render-control!
                 hud! |ok~ |Ok
               hud! |error build-errors
+            , &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -152,8 +153,18 @@
         'connect-state $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn connect-state (field)
             {}
-              :pointerdown $ fn (event) (; js/console.log |down event) (set-button-state! field true)
-              :pointerup $ fn (event) (; js/console.log |up event) (set-button-state! field false)
+              :pointerdown $ fn (event)
+                hint-fn $ {}
+                  :args $ [] 'js-ffi.browser/PointerEventHost
+                  :return 'Unit
+                ; js/console.log |down event
+                set-button-state! field true
+              :pointerup $ fn (event)
+                hint-fn $ {}
+                  :args $ [] 'js-ffi.browser/PointerEventHost
+                  :return 'Unit
+                ; js/console.log |up event
+                set-button-state! field false
           :examples $ []
           :schema $ :: 'Fn $ {}
             :args $ [] 'Tag
@@ -211,18 +222,32 @@
         'left-events $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def left-events
             let
-                on-leave $ fn (event) (swap! *control-states assoc :left-move zero) (swap! *prev-control-states assoc :left-move zero)
+                on-leave $ fn (event)
+                  hint-fn $ {}
+                    :args $ [] 'js-ffi.browser/PointerEventHost
+                    :return 'Unit
+                  swap! *control-states assoc :left-move zero
+                  swap! *prev-control-states assoc :left-move zero
+                  , &unit
                 on-enter $ fn (event)
+                  hint-fn $ {}
+                    :args $ [] 'js-ffi.browser/PointerEventHost
+                    :return 'Unit
                   reset! *left-origin $ [] (pointer-x event) (pointer-y event)
                   swap! *control-states assoc :left-move zero
                   swap! *prev-control-states assoc :left-move zero
+                  , &unit
               {} (:pointerdown on-enter) (:pointerenter on-enter) (:pointerleave on-leave) (:pointerup on-leave)
                 :pointermove $ fn (event)
+                  hint-fn $ {}
+                    :args $ [] 'js-ffi.browser/PointerEventHost
+                    :return 'Unit
                   let
                       move $ []
                         - (pointer-x event) (&list:nth @*left-origin 0)
                         - (&list:nth @*left-origin 1) (pointer-y event)
                     swap! *control-states assoc :left-move move
+                  , &unit
           :examples $ []
           :schema $ :: 'Map 'Tag $ :: 'Fn
             {} (:return 'Unit)
@@ -234,22 +259,16 @@
             :args $ []
             :features $ #{} :js-ffi
         'pointer-x $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn pointer-x (event)
-            let
-                host $ browser/pointer-event-host event
-              host :layer-x
+          :code $ quote $ defn pointer-x (event) (event :layer-x)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
-            :args $ [] 'js-ffi.browser/EventHost
+            :args $ [] 'js-ffi.browser/PointerEventHost
             :features $ #{} :js-ffi
         'pointer-y $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn pointer-y (event)
-            let
-                host $ browser/pointer-event-host event
-              host :layer-y
+          :code $ quote $ defn pointer-y (event) (event :layer-y)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
-            :args $ [] 'js-ffi.browser/EventHost
+            :args $ [] 'js-ffi.browser/PointerEventHost
             :features $ #{} :js-ffi
         'remove-container! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn remove-container! (value) (browser/element-remove! value)
@@ -338,18 +357,32 @@
           :code $ quote $ def right-events
             let
                 on-enter $ fn (event)
+                  hint-fn $ {}
+                    :args $ [] 'js-ffi.browser/PointerEventHost
+                    :return 'Unit
                   reset! *right-origin $ [] (pointer-x event) (pointer-y event)
                   swap! *control-states assoc :right-move zero
                   swap! *prev-control-states assoc :right-move zero
-                on-leave $ fn (event) (swap! *control-states assoc :right-move zero) (swap! *prev-control-states assoc :right-move zero)
+                  , &unit
+                on-leave $ fn (event)
+                  hint-fn $ {}
+                    :args $ [] 'js-ffi.browser/PointerEventHost
+                    :return 'Unit
+                  swap! *control-states assoc :right-move zero
+                  swap! *prev-control-states assoc :right-move zero
+                  , &unit
               {} (:pointerdown on-enter) (:pointerup on-leave) (:pointerenter on-enter) (:pointerleave on-leave)
                 :pointermove $ fn (event)
+                  hint-fn $ {}
+                    :args $ [] 'js-ffi.browser/PointerEventHost
+                    :return 'Unit
                   let
                       move $ []
                         - (pointer-x event) (&list:nth @*right-origin 0)
                         - (&list:nth @*right-origin 1) (pointer-y event)
                     ; js/console.log "|moving to" move
                     swap! *control-states assoc :right-move move
+                  , &unit
           :examples $ []
           :schema $ :: 'Map 'Tag $ :: 'Fn
             {} (:return 'Unit)
@@ -374,14 +407,12 @@
                 elapsed $ / (- now @*last-tick) 1000
                 shift? @*shift-listener
                 states @*control-states
-                delta $ %{} ControlDelta
-                  :left-move $ &c- (:left-move states) (:left-move @*prev-control-states)
-                  :right-move $ &c- (:right-move states) (:right-move @*prev-control-states)
+                delta $ ControlDelta :left-move
+                  &c- (:left-move states) (:left-move @*prev-control-states)
+                  , :right-move $ &c- (:right-move states) (:right-move @*prev-control-states)
               f elapsed (assoc states :shift? shift?) delta
               reset! *last-tick now
-              reset! *prev-control-states $ %{} ControlDelta
-                :left-move $ :left-move states
-                :right-move $ :right-move states
+              reset! *prev-control-states $ ControlDelta :left-move (:left-move states) :right-move $ :right-move states
               if
                 and (:left-a? states) (:right-a? states)
                 try-fullscreen!
