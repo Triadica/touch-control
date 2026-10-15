@@ -34,7 +34,7 @@
             :features $ #{} :js-ffi
         'mount-target $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def mount-target
-            option:unwrap $ browser/query-selector |.app
+            (browser/query-selector |.app) .unwrap
           :examples $ []
           :schema $ :: 'js-ffi.browser/DomElementHost
         'reload! $ %{} 'CodeEntry (:doc |)
@@ -54,7 +54,8 @@
           :code $ quote $ defn show-data! (elapsed states delta)
             println |showing elapsed (:left-move states) (:right-move states) (:left-a? states) (:right-a? states)
             browser/element-set-text-content!
-              option:unwrap $ browser/query-selector |pre
+                browser/query-selector |pre
+                , .unwrap
               format-cirru-edn $ {} (:states states) (:delta delta)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
@@ -186,7 +187,7 @@
                 :args $ [] 'js-ffi.browser/PointerEventHost
         'document-body $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn document-body ()
-            option:unwrap $ browser/document-body
+            (browser/document-body) .unwrap
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'js-ffi.browser/DomElementHost)
             :args $ []
@@ -328,11 +329,13 @@
                 k $ keys props
                 browser/element-set-attribute! div
                   if (= k :className) |class $ to-string k
-                  option:unwrap $ get props k
+                  (get props k) .unwrap
               &doseq
                 k $ keys events
                 let
-                    handler $ option:unwrap $ get events k
+                    handler $
+                      get events k
+                      , .unwrap
                   browser/element-add-event-listener! div (to-string k)
                     fn (event)
                       hint-fn $ {} (:return 'Unit)
@@ -432,7 +435,9 @@
           :code $ quote $ defn try-fullscreen! ()
             if
               not= (browser/viewport-height) (browser/screen-height)
-              browser/element-request-fullscreen! $ option:unwrap $ browser/document-element
+              browser/element-request-fullscreen! $
+                browser/document-element
+                , .unwrap
             , &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
