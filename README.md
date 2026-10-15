@@ -65,9 +65,11 @@ https://github.com/calcit-lang/respo-calcit-workflow
 
 ### Compatibility and validation
 
-使用者影响：候选 0.0.30 对齐正式 js-ffi 0.2.3，Calcit / `@calcit/procs` 保持正式 0.29.3。Touch Control 源码、ControlState/ControlDelta、PointerEventHost 回调、计时与清理行为不变。使用 strict Caps 的消费者应配套对齐直接/间接 js-ffi，不能将本版与仍固定 0.2.2 的旧模块图混装；旧 tag 保留原内容，等待候选正式发布后再更新。
+使用者影响：候选 0.0.31 对齐正式 Calcit / `@calcit/procs` 0.30.0，继续使用正式 js-ffi 0.2.3。ControlState/ControlDelta、PointerEventHost 回调、计时与清理行为不变。使用 strict Caps 的消费者应配套对齐工具链和直接/间接 js-ffi，不能将本版与仍固定 0.2.2 的旧模块图混装；旧 tag 保留原内容，等待候选正式发布后再更新。
 
-模块 0.0.30 候选使用稳定版 Calcit / `@calcit/procs` 0.29.3 和正式版 js-ffi 0.2.3。
+模块 0.0.31 候选使用稳定版 Calcit / `@calcit/procs` 0.30.0 和正式版 js-ffi 0.2.3。
+六处 Option 读取改为接收者 `.unwrap`；DOM 目标缺失时仍报错，不添加 nil 默认或不安全转换。
+升级 `@calcit/procs` 后需重启已有 Vite 开发服务；若仍加载旧依赖缓存，用 `yarn vite --force` 重新预构建。
 DOM 入口完成一次受检 PointerEvent 转换，内部事件回调和坐标读取使用精确的 PointerEventHost 契约。
 旧版 0.0.29 与 Pointed Prompt 0.0.17 的 js-ffi 0.2.2 组合仍属于旧依赖图，不代表它们已同步本版。
 公开回调签名使用完整的 `touch-control.core/ControlState` 和
