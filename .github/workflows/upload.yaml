@@ -54,9 +54,9 @@ jobs:
       run: |
         calcit calcit.cirru edit format
         git diff --exit-code -- calcit.cirru
-        calcit calcit.cirru fix --workflow strict --verify --format edn
-        calcit calcit.cirru --check-only
-        calcit --check-only --ns touch-control.core --ns touch-control.app.main --ns touch-control.app.config --summary-only --format edn
+        calcit calcit.cirru fix --workflow strict --verify --format json > /tmp/touch-control-strict.json
+        jq -e '.data.workflow.status == "passed" and (.diagnostics | length == 0)' /tmp/touch-control-strict.json
+        calcit calcit.cirru --check-only --all-defs
         calcit analyze weak-types --only dynamic-method --summary-only --format edn
         calcit analyze weak-types --only deprecated-call --summary-only --format edn
         calcit calcit.cirru test --tag unit --require-match --summary-only --format json
@@ -77,6 +77,17 @@ jobs:
       env:
         VITE_BASE_URL: ${{ steps.asset-path.outputs.base-url }}
       run: yarn build
+
+    - name: Preserve PR frontend for interaction acceptance
+      if: github.event_name == 'pull_request'
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+      with:
+        name: touch-control-frontend
+        path: |
+          dist
+          js-out
+        if-no-files-found: error
+        retention-days: 7
 
     - name: Verify deployment host key
       run: |
