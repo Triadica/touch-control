@@ -85,7 +85,7 @@ caps --strict --ci
 yarn install --immutable
 caps verify --toolchain
 calcit calcit.cirru edit format
-calcit fix --workflow strict --verify --format json > /tmp/touch-control-strict.json
+calcit calcit.cirru fix --workflow strict --verify --format json > /tmp/touch-control-strict.json
 jq -e '.data.workflow.status == "passed" and (.diagnostics | length == 0)' /tmp/touch-control-strict.json
 calcit calcit.cirru --check-only --all-defs
 calcit calcit.cirru test --tag unit --require-match --summary-only --format json
@@ -98,7 +98,7 @@ yarn build
 生产前端通过 `VITE_BASE_URL=https://cos-sh.tiye.me/Triadica/touch-control/` 构建，
 COS action 的 `public-base-url` 提供内置内容校验，不增加额外上传验证脚本。
 配置 `COS_BUCKET`、`COS_SECRET_ID`、`COS_SECRET_KEY` 和原 `rsync_private_key`。
-原服务器目录和固定 SSH 主机密钥校验保持不变；PR 不上传 COS 或部署服务器，只保留 7 天的前端构建 artifact 用于交互验收，不包含凭据。
+原服务器目录和固定 SSH 主机密钥校验保持不变；PR 不上传 COS 或部署服务器，只保留 7 天的 `dist` / `js-out` 构建 artifact，用于 Demo 和公开 API 交互验收，不包含凭据，也不将生成文件提交到 Git。
 生产任务开始上传前检查 main revision，随后串行完成该 revision 的 COS 和服务器部署；
 期间新提交排队，不中途取消，也不承诺与 main 原子同步。
 
