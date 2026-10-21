@@ -1,6 +1,6 @@
 {
   "name": "@quamolit/touch-control",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "packageManager": "yarn@4.18.0",
   "scripts": {
     "compile": "calcit",
@@ -10,7 +10,7 @@
     "release": "yarn build"
   },
   "devDependencies": {
-    "@calcit/procs": "0.30.0",
+    "@calcit/procs": "0.30.1",
     "bottom-tip": "^0.1.5",
     "vite": "8.3.0"
   }
