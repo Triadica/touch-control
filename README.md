@@ -2,6 +2,10 @@
 Touch Control
 ----
 
+使用者影响：候选 `0.0.33` 仅将正式 `0.0.32` 的 JS-FFI 配对到已发布 `0.2.6`，Calcit CLI / procs 仍为正式 `0.30.1`。Snapshot、ControlState/ControlDelta、PointerEventHost 回调、计时和清理逻辑及原测试不变；其他直接/传递依赖也需配对相同 JS-FFI 正式版本。通用 DOM 宿主合同修复由上游提供，不给普通元素补假字段或添加 unsafe。完整 CI 与实际控件回归仍须验收；本次不发布 npm、不合并或部署 Demo。
+
+此补丁使用独立 `maintenance/0.30.1` 维护线，push 执行原工作流，但原生产部署仍仅限当前 main push。维护线合并或 Git 正式 tag 不触发 COS/rsync，也不改变 main；这里只升级库的已发布依赖组合，不将该回归作为所有消费者场景均已验收的证明。
+
 > for Quatrefoil [calcit-js](https://github.com/calcit-lang/calcit). This lib targets Chrome mobile.
 
 Demo http://r.tiye.me/Quatrefoil-GL/touch-control/ .
