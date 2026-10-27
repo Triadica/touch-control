@@ -65,17 +65,14 @@ https://github.com/calcit-lang/respo-calcit-workflow
 
 ### Compatibility and validation
 
-使用者影响：候选 0.0.32 对齐正式 Calcit / `@calcit/procs` 0.30.1 和 js-ffi 0.2.5。应用源码、ControlState/ControlDelta、PointerEventHost 回调、计时与清理行为不变。使用 strict Caps 的消费者应配套对齐工具链和直接/间接 js-ffi，不能与旧模块图混装。已发布 0.0.31 的 tag 保留原内容；0.0.32 正式发布前，下游不要引用候选 main/hash。
+使用者影响：候选 **0.0.34** 配对正式 **Calcit / @calcit/procs 0.31.0**，使用真实声明0.31的已发布JS-FFI **0.2.7**。消费者应协调完整模块图，重新生成JS并重启开发服务；如仍加载旧预构建缓存，可用 `yarn vite --force`。
 
-上一轮已将六处 Option 读取改为接收者 `.unwrap`；DOM 目标缺失时仍报错，本轮不添加 nil 默认或不安全转换。
-升级 `@calcit/procs` 后需重启已有 Vite 开发服务；若仍加载旧依赖缓存，用 `yarn vite --force` 重新预构建。
-DOM 入口完成一次受检 PointerEvent 转换，内部事件回调和坐标读取使用精确的 PointerEventHost 契约。
-旧版 0.0.31 与 Pointed Prompt 0.0.19 仍属于 0.30.0 依赖图，不代表它们已同步本版。
-公开回调签名使用完整的 `touch-control.core/ControlState` 和
-`touch-control.core/ControlDelta` 类型名，保证跨模块回调的类型身份一致。
-受检宿主转换现已由稳定工具链支持；下游使用模块发布 tag，不引用 main/hash。
-使用 Node.js 24、Yarn 4.18.0、Vite 8.3.0；本轮保留 Vite 与其他 npm 依赖版本及安装安全策略。
-正式 CLI 由 Linux CI 验收；macOS 本地旧版 0.30.0 基线不代替正式 0.30.1 检查，使用前检查目标平台 release 资产。
+Snapshot与已发布0.0.33及当前main相同；ControlState/ControlDelta、PointerEventHost回调、坐标、计时和清理行为均不改。0.0.33仍保留在0.30.1维护线，不移动旧tag或改该分支；本候选面向main的正式0.31使用方，发布前不引用main/hash替代tag。
+
+DOM入口保留受检PointerEvent转换；目标缺失时报错，不增加nil默认或不安全转换。公开回调继续使用完整的touch-control.core/ControlState与ControlDelta类型身份。默认值、随机/计时与调用次数均保持。
+
+Node.js24、Yarn4.18.0、Vite8.3.0及其他npm依赖保持，正常更新procs lock后执行不可变安装。原完整strict、全部定义、unit、构建及部署门禁保留；不新建测试框架或编译器规则。源码不变不代表所有平台或消费者已验收，正式结果以精确PR/main CI和实际Demo交互为准。
+
 Validate the
 exact toolchain, Snapshot, public types, unit behavior, and production
 bundle with:
