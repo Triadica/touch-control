@@ -65,13 +65,13 @@ https://github.com/calcit-lang/respo-calcit-workflow
 
 ### Compatibility and validation
 
-使用者影响：候选 **0.0.35** 配对正式 **Calcit / @calcit/procs 0.32.0**，使用已发布且配对0.32.0的JS-FFI **0.2.8**。消费者应协调完整模块图，重新生成JS并重启开发服务；如仍加载旧预构建缓存，可用 `yarn vite --force`。
+使用者影响：候选 **0.0.35** 配对正式 **Calcit / @calcit/procs 0.32.1**，使用已发布且配对0.32.1的JS-FFI **0.2.9**。消费者应协调完整模块图，重新生成JS并重启开发服务；如仍加载旧预构建缓存，可用 `yarn vite --force`。
 
-Snapshot通过官方formatter同步0.32.0类型语法；ControlState/ControlDelta、PointerEventHost回调、坐标、计时和清理行为均不改。0.0.33仍保留在0.30.1维护线，不移动旧tag或改该分支；0.0.34供0.31.0使用者继续使用，本候选面向正式0.32.0使用方，发布前不引用main/hash替代tag。
+此前已通过官方formatter同步0.32类型语法；本轮补丁升级不改Snapshot，39个定义的代码、schema和原测试完全不变；ControlState/ControlDelta、PointerEventHost回调、坐标、计时和清理行为均不改。0.0.33仍保留在0.30.1维护线，不移动旧tag或改该分支；0.0.34供0.31.0使用者继续使用，本候选面向正式0.32.1使用方，发布前不引用main/hash替代tag。
 
 DOM入口保留受检PointerEvent转换；目标缺失时报错，不增加nil默认或不安全转换。公开回调继续使用完整的touch-control.core/ControlState与ControlDelta类型身份。默认值、随机/计时与调用次数均保持。
 
-Node.js24、Yarn4.18.0、Vite8.3.0及其他npm依赖保持，正常更新procs lock后执行不可变安装。原完整strict、全部定义、unit、构建及部署门禁保留；不新建测试框架或编译器规则。类型合同不变不代表所有平台或消费者已验收，正式结果以精确PR/main CI和实际Demo交互为准。
+Node.js24、Yarn4.18.0、Vite8.3.0及其他npm依赖保持，正常更新procs lock后执行不可变安装。原完整strict、全部定义、unit、构建及部署门禁保留；不新建测试框架或编译器规则。本轮正式Caps strict/toolchain、43个全定义、完整strict（diagnostics为空）、原1项unit、dynamic-method=0、deprecated-call=0、不可变安装及构建通过。实际Demo左A与释放、隔离公开API的四按钮/Shift/双手柄，以及start/replace/重复clear与重启通过；隔离页只放在忽略目录，不提交额外脚本。未做真实移动设备验收；正式结果仍以精确PR/main CI和消费者验收为准。
 
 Validate the
 exact toolchain, Snapshot, public types, unit behavior, and production
