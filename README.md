@@ -65,24 +65,21 @@ https://github.com/calcit-lang/respo-calcit-workflow
 
 ### Compatibility and validation
 
-使用者影响：候选 **0.0.36** 配对正式 **Calcit / @calcit/procs 0.34.2**，使用正式
-JS-FFI **0.2.9**。消费者应协调完整模块图，重新生成 JS 并刷新；旧预构建缓存可用
-`yarn vite --force` 清除。0.0.35 保留在 0.32.1 线，不移动旧 tag。
+使用者影响：候选 **0.0.37** 将 JS-FFI 依赖升级到正式 **0.2.10**，继续配对
+**Calcit / @calcit/procs 0.34.2**。消费者需协调完整模块图；严格安装不应混用
+JS-FFI 0.2.9 和 0.2.10。已经发布的 0.0.36 保留旧配对，不移动旧 tag。
 
-官方 CLI 只规范化旧类型语法。与官方规范化后的原快照逐定义对照，公开状态、delta、
-PointerEventHost、代码、schema 与原测试无语义变化。ControlState/ControlDelta 已是明确的
-Struct，输出回调的三个参数及 Unit 返回型保持；schemaDynamic/unresolved 扫描为零，
-不为了使用 union 重复包装这些已有合同，也不把二维 List 的长度伪装成静态证明。
+本次不修改 Snapshot：ControlState、ControlDelta、PointerEventHost、公开回调、
+按钮、Shift、坐标、计时、循环替换、清理及 HUD 均保持。状态与 delta 已有明确 Struct
+合同，不为了使用 union 重复包装，也不将二维 List 的长度伪装成静态证明。
 
-DOM 入口保留受检 PointerEvent 转换，目标缺失时报错。按钮、Shift、坐标、计时、循环替换、
-清理及 HUD 保持，不增加 nil 默认或 unsafe。Node 24、Yarn 4.18.0、原 npm 依赖与全部门禁
-保持；本地正式 Caps strict/toolchain、immutable、全部 43 定义、完整 strict
+本地正式 Caps strict/toolchain、Yarn immutable、全部定义、完整 strict
 （diagnostics=[]）、原 1 项 unit、deprecated-call=0、dynamic-method=0 及构建通过。
-不新增检查脚本或测试框架；新精确 CI 和消费者验收仍需跟进。
+与已发布 0.0.36 的 Snapshot 字节一致；不新增检查脚本、测试框架或放宽类型门禁。
 
-此前 0.32.1 已验收四按钮/Shift/双手柄，以及 start/replace/重复 clear 与重启；本轮
-尚未重新做浏览器或移动设备验收，不将历史结果当作新候选证据。此 PR 不合并、不部署、
-不发布 tag/npm，0.0.36 在正式 tag 创建前仅为候选。
+此前版本的四按钮、Shift、双手柄和循环生命周期验收仅作历史记录；本候选尚未重新
+验收浏览器或移动设备，不能由静态与构建结果推断交互已通过。新精确 CI 和消费者
+验收仍需跟进。0.0.37 在正式 Git tag 创建前仅为候选，不发布 npm。
 
 Validate the
 exact toolchain, Snapshot, public types, unit behavior, and production
