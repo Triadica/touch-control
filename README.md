@@ -77,9 +77,12 @@ JS-FFI 0.2.9 和 0.2.10。已经发布的 0.0.36 保留旧配对，不移动旧 
 （diagnostics=[]）、原 1 项 unit、deprecated-call=0、dynamic-method=0 及构建通过。
 与已发布 0.0.36 的 Snapshot 字节一致；不新增检查脚本、测试框架或放宽类型门禁。
 
-此前版本的四按钮、Shift、双手柄和循环生命周期验收仅作历史记录；本候选尚未重新
-验收浏览器或移动设备，不能由静态与构建结果推断交互已通过。新精确 CI 和消费者
-验收仍需跟进。0.0.37 在正式 Git tag 创建前仅为候选，不发布 npm。
+本候选已在全新临时 Chrome 156 headless profile 验收：四按钮按下/松开、双手柄
+位移方向与归零、Shift、名义 ControlState/ControlDelta 回调，以及循环
+start/replace/重复 clear/restart 和页面刷新。使用真实 DOM 与鼠标键盘事件，未操作
+已有用户数据。桌面验收不代表实体移动设备或全屏行为通过；这些路径未在本轮复验。
+新精确 CI 与协调后的下游依赖图仍需跟进，0.0.37 在正式 Git tag 创建前仅为候选，
+不发布 npm。
 
 Validate the
 exact toolchain, Snapshot, public types, unit behavior, and production
