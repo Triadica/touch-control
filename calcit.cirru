@@ -128,7 +128,7 @@
           :examples $ []
           :schema $ quote StructDef
         'ControlState $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defstruct ControlState (:left-a? 'Bool) (:left-b? 'Bool) (:right-a? 'Bool) (:right-b? 'Bool) (:shift? 'Bool)
+          :code $ quote $ defstruct ControlState (:left-a? Bool) (:left-b? Bool) (:right-a? Bool) (:right-b? Bool) (:shift? Bool)
             :left-move $ quote $ List Number
             :left-prev $ quote $ List Number
             :right-move $ quote $ List Number
