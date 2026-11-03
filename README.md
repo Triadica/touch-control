@@ -65,13 +65,24 @@ https://github.com/calcit-lang/respo-calcit-workflow
 
 ### Compatibility and validation
 
-使用者影响：候选 **0.0.35** 配对正式 **Calcit / @calcit/procs 0.32.1**，使用已发布且配对0.32.1的JS-FFI **0.2.9**。消费者应协调完整模块图，重新生成JS并重启开发服务；如仍加载旧预构建缓存，可用 `yarn vite --force`。
+使用者影响：候选 **0.0.36** 配对正式 **Calcit / @calcit/procs 0.34.2**，使用正式
+JS-FFI **0.2.9**。消费者应协调完整模块图，重新生成 JS 并刷新；旧预构建缓存可用
+`yarn vite --force` 清除。0.0.35 保留在 0.32.1 线，不移动旧 tag。
 
-此前已通过官方formatter同步0.32类型语法；本轮补丁升级不改Snapshot，39个定义的代码、schema和原测试完全不变；ControlState/ControlDelta、PointerEventHost回调、坐标、计时和清理行为均不改。0.0.33仍保留在0.30.1维护线，不移动旧tag或改该分支；0.0.34供0.31.0使用者继续使用，本候选面向正式0.32.1使用方，发布前不引用main/hash替代tag。
+官方 CLI 只规范化旧类型语法。与官方规范化后的原快照逐定义对照，公开状态、delta、
+PointerEventHost、代码、schema 与原测试无语义变化。ControlState/ControlDelta 已是明确的
+Struct，输出回调的三个参数及 Unit 返回型保持；schemaDynamic/unresolved 扫描为零，
+不为了使用 union 重复包装这些已有合同，也不把二维 List 的长度伪装成静态证明。
 
-DOM入口保留受检PointerEvent转换；目标缺失时报错，不增加nil默认或不安全转换。公开回调继续使用完整的touch-control.core/ControlState与ControlDelta类型身份。默认值、随机/计时与调用次数均保持。
+DOM 入口保留受检 PointerEvent 转换，目标缺失时报错。按钮、Shift、坐标、计时、循环替换、
+清理及 HUD 保持，不增加 nil 默认或 unsafe。Node 24、Yarn 4.18.0、原 npm 依赖与全部门禁
+保持；本地正式 Caps strict/toolchain、immutable、全部 43 定义、完整 strict
+（diagnostics=[]）、原 1 项 unit、deprecated-call=0、dynamic-method=0 及构建通过。
+不新增检查脚本或测试框架；新精确 CI 和消费者验收仍需跟进。
 
-Node.js24、Yarn4.18.0、Vite8.3.0及其他npm依赖保持，正常更新procs lock后执行不可变安装。原完整strict、全部定义、unit、构建及部署门禁保留；不新建测试框架或编译器规则。本轮正式Caps strict/toolchain、43个全定义、完整strict（diagnostics为空）、原1项unit、dynamic-method=0、deprecated-call=0、不可变安装及构建通过。实际Demo左A与释放、隔离公开API的四按钮/Shift/双手柄，以及start/replace/重复clear与重启通过；隔离页只放在忽略目录，不提交额外脚本。未做真实移动设备验收；正式结果仍以精确PR/main CI和消费者验收为准。
+此前 0.32.1 已验收四按钮/Shift/双手柄，以及 start/replace/重复 clear 与重启；本轮
+尚未重新做浏览器或移动设备验收，不将历史结果当作新候选证据。此 PR 不合并、不部署、
+不发布 tag/npm，0.0.36 在正式 tag 创建前仅为候选。
 
 Validate the
 exact toolchain, Snapshot, public types, unit behavior, and production
