@@ -67,10 +67,9 @@
       :defs $ {}
         '%element $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstruct %element
-            :props $ quote $ Map Tag String
-            :events $ quote $ Map Tag
-              Fn js-ffi.browser/PointerEventHost (-> Unit) (:features :js-ffi)
-            :children $ quote $ List touch-control.core/%element
+            :props $ Map Tag String
+            :events $ Map Tag $ Fn js-ffi.browser/PointerEventHost (-> Unit) (:features :js-ffi)
+            :children $ List touch-control.core/%element
           :examples $ []
           :schema $ quote StructDef
         '&c- $ %{} 'CodeEntry (:doc |)
@@ -123,16 +122,16 @@
           :schema $ quote $ Ref Number
         'ControlDelta $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstruct ControlDelta
-            :left-move $ quote $ List Number
-            :right-move $ quote $ List Number
+            :left-move $ List Number
+            :right-move $ List Number
           :examples $ []
           :schema $ quote StructDef
         'ControlState $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstruct ControlState (:left-a? Bool) (:left-b? Bool) (:right-a? Bool) (:right-b? Bool) (:shift? Bool)
-            :left-move $ quote $ List Number
-            :left-prev $ quote $ List Number
-            :right-move $ quote $ List Number
-            :right-prev $ quote $ List Number
+            :left-move $ List Number
+            :left-prev $ List Number
+            :right-move $ List Number
+            :right-prev $ List Number
           :examples $ []
           :schema $ quote StructDef
         'clear-control-loop! $ %{} 'CodeEntry (:doc |)
