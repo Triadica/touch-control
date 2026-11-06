@@ -65,24 +65,11 @@ https://github.com/calcit-lang/respo-calcit-workflow
 
 ### Compatibility and validation
 
-使用者影响：候选 **0.0.37** 将 JS-FFI 依赖升级到正式 **0.2.10**，继续配对
-**Calcit / @calcit/procs 0.34.2**。消费者需协调完整模块图；严格安装不应混用
-JS-FFI 0.2.9 和 0.2.10。已经发布的 0.0.36 保留旧配对，不移动旧 tag。
+候选 **0.0.38** 使用正式 Calcit / `@calcit/procs` 0.35.1 和 JS FFI 0.2.13。消费者需同步依赖图并重新生成 JS。
 
-本次不修改 Snapshot：ControlState、ControlDelta、PointerEventHost、公开回调、
-按钮、Shift、坐标、计时、循环替换、清理及 HUD 均保持。状态与 delta 已有明确 Struct
-合同，不为了使用 union 重复包装，也不将二维 List 的长度伪装成静态证明。
+官方格式器更新九处类型表示。ControlState、ControlDelta、PointerEventHost、公开回调、按钮、Shift、坐标和循环清理行为沿用。
 
-本地正式 Caps strict/toolchain、Yarn immutable、全部定义、完整 strict
-（diagnostics=[]）、原 1 项 unit、deprecated-call=0、dynamic-method=0 及构建通过。
-与已发布 0.0.36 的 Snapshot 字节一致；不新增检查脚本、测试框架或放宽类型门禁。
-
-本候选已在全新临时 Chrome 156 headless profile 验收：四按钮按下/松开、双手柄
-位移方向与归零、Shift、名义 ControlState/ControlDelta 回调，以及循环
-start/replace/重复 clear/restart 和页面刷新。使用真实 DOM 与鼠标键盘事件，未操作
-已有用户数据。桌面验收不代表实体移动设备或全屏行为通过；这些路径未在本轮复验。
-新精确 CI 与协调后的下游依赖图仍需跟进，0.0.37 在正式 Git tag 创建前仅为候选，
-不发布 npm。
+Caps 严格解析、不可变安装、43 个完整定义、完整 strict、原坐标单元测试及构建通过。实体触控和全屏待验收。
 
 Validate the
 exact toolchain, Snapshot, public types, unit behavior, and production
