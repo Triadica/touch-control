@@ -161,7 +161,8 @@
           :examples $ []
           :schema $ quote $ Fn (Map Tag String)
             Map Tag $ Fn js-ffi.browser/PointerEventHost $ -> Unit
-            , & touch-control.core/%element (-> touch-control.core/%element)
+            & touch-control.core/%element
+            -> touch-control.core/%element
         'document-body $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn document-body ()
             (browser/document-body) .unwrap
