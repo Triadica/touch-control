@@ -65,11 +65,9 @@ https://github.com/calcit-lang/respo-calcit-workflow
 
 ### Compatibility and validation
 
-候选 **0.0.38** 使用正式 Calcit / `@calcit/procs` 0.35.1 和 JS FFI 0.2.13。消费者需同步依赖图并重新生成 JS。
+候选 **0.0.40** 使用正式 Calcit / `@calcit/procs` 0.38.0 和 JS FFI 0.2.13。使用 Calcit 0.37.0 的项目可继续使用 Touch Control 0.0.39。升级工具链后重新生成 JS。
 
-官方格式器更新九处类型表示。ControlState、ControlDelta、PointerEventHost、公开回调、按钮、Shift、坐标和循环清理行为沿用。
-
-Caps 严格解析、不可变安装、43 个完整定义、完整 strict、原坐标单元测试及构建通过。实体触控和全屏待验收。
+公开的 ControlState、ControlDelta、PointerEventHost 与回调类型沿用。按钮、Shift、方向盘和循环清理行为沿用。
 
 Validate the
 exact toolchain, Snapshot, public types, unit behavior, and production
