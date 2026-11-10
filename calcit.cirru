@@ -77,7 +77,7 @@
             let[] (x1 y1) a $ let[] (x2 y2) b $ [] (- x1 x2) (- y1 y2)
           :examples $ []
           :schema $ quote $ Fn (List Number) (List Number)
-            -> $ List Number
+            -> $ Tuple Number Number
           :tests $ [] $ %{} 'TestEntry (:name |subtracts-coordinates)
             :code $ quote $ assert |subtracts-coordinates
               = ([] 2 3)
@@ -122,16 +122,16 @@
           :schema $ quote $ Ref Number
         'ControlDelta $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstruct ControlDelta
-            :left-move $ List Number
-            :right-move $ List Number
+            :left-move $ Tuple Number Number
+            :right-move $ Tuple Number Number
           :examples $ []
           :schema $ quote StructDef
         'ControlState $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstruct ControlState (:left-a? Bool) (:left-b? Bool) (:right-a? Bool) (:right-b? Bool) (:shift? Bool)
-            :left-move $ List Number
-            :left-prev $ List Number
-            :right-move $ List Number
-            :right-prev $ List Number
+            :left-move $ Tuple Number Number
+            :left-prev $ Tuple Number Number
+            :right-move $ Tuple Number Number
+            :right-prev $ Tuple Number Number
           :examples $ []
           :schema $ quote StructDef
         'clear-control-loop! $ %{} 'CodeEntry (:doc |)
@@ -210,9 +210,11 @@
                 :pointermove $ fn (event)
                   hint-fn $ Fn js-ffi.browser/PointerEventHost $ -> Unit
                   let
-                      move $ []
-                        - (pointer-x event) (&list:nth @*left-origin 0)
-                        - (&list:nth @*left-origin 1) (pointer-y event)
+                      move $ assert-type
+                        []
+                          - (pointer-x event) (&list:nth @*left-origin 0)
+                          - (&list:nth @*left-origin 1) (pointer-y event)
+                        Tuple Number Number
                     swap! *control-states assoc :left-move move
                   , &unit
           :examples $ []
@@ -325,9 +327,11 @@
                 :pointermove $ fn (event)
                   hint-fn $ Fn js-ffi.browser/PointerEventHost $ -> Unit
                   let
-                      move $ []
-                        - (pointer-x event) (&list:nth @*right-origin 0)
-                        - (&list:nth @*right-origin 1) (pointer-y event)
+                      move $ assert-type
+                        []
+                          - (pointer-x event) (&list:nth @*right-origin 0)
+                          - (&list:nth @*right-origin 1) (pointer-y event)
+                        Tuple Number Number
                     ; js/console.log "|moving to" move
                     swap! *control-states assoc :right-move move
                   , &unit
@@ -386,7 +390,7 @@
         'zero $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def zero ([] 0 0)
           :examples $ []
-          :schema $ quote $ List Number
+          :schema $ quote $ Tuple Number Number
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns touch-control.core
           :require (js-ffi.browser :as browser) (js-ffi.shared :as shared)

@@ -8,9 +8,9 @@ Demo http://r.tiye.me/Quatrefoil-GL/touch-control/ .
 
 ### Usages
 
-Import via calcit:
+Run these commands in a browser entry:
 
-```cirru
+```cirru.no-check
 ; "renders to body"
 touch-control.core/render-control!
 
@@ -27,26 +27,14 @@ touch-control.core/clear-control-loop!
 touch-control.core/replace-control-loop! 300 $ fn (elapsed states delta)
 ```
 
-States are returned as the typed `ControlState` struct:
+The callback receives a typed `ControlState` and `ControlDelta`. Their movement fields
+contain two numbers:
 
 ```cirru
-:left-move $ [] 0 0
-:right-move $ [] 0 0
-
-:left-a? false
-:left-b? false
-
-:right-a? false
-:right-b? false
-
-:shift? false
-```
-
-Delta is returned as the typed `ControlDelta` struct:
-
-```cirru
-:left-move $ [] 0 0
-:right-move $ [] 0 0
+let
+    move $ assert-type ([] 0 0) (Tuple Number Number)
+    delta $ touch-control.core/ControlDelta :left-move move :right-move move
+  assert= move $ :left-move delta
 ```
 
 To load styles:
@@ -65,9 +53,12 @@ https://github.com/calcit-lang/respo-calcit-workflow
 
 ### Compatibility and validation
 
-候选 **0.0.40** 使用正式 Calcit / `@calcit/procs` 0.38.0 和 JS FFI 0.2.13。使用 Calcit 0.37.0 的项目可继续使用 Touch Control 0.0.39。升级工具链后重新生成 JS。
+候选 **0.0.40** 使用正式 Calcit / `@calcit/procs` 0.40.0 和 JS FFI 0.2.13。使用 Calcit 0.37.0 的项目可继续使用 Touch Control 0.0.39。升级工具链后重新生成 JS。
 
-公开的 ControlState、ControlDelta、PointerEventHost 与回调类型沿用。按钮、Shift、方向盘和循环清理行为沿用。
+`ControlState` 的 `:left-move`、`:left-prev`、`:right-move`、`:right-prev`，以及
+`ControlDelta` 的 `:left-move`、`:right-move`，从 `List Number` 收紧为
+`Tuple Number Number`。运行时仍是两个数字组成的列表。直接构造这两个结构时，
+位移字段需要满足定长元组检查。PointerEventHost、控制回调、按钮、Shift、方向盘和循环清理行为沿用。
 
 Validate the
 exact toolchain, Snapshot, public types, unit behavior, and production
