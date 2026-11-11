@@ -34,7 +34,7 @@
           :code $ quote $ def mount-target
             (browser/query-selector |.app) .unwrap
           :examples $ []
-          :schema $ quote js-ffi.browser/DomElementHost
+          :schema $ quote browser/DomElementHost
         'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reload! ()
             if (nil? build-errors)
@@ -86,7 +86,7 @@
         '*container $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defref *container (create-container-placeholder)
           :examples $ []
-          :schema $ quote $ Ref js-ffi.browser/DomElementHost
+          :schema $ quote $ Ref browser/DomElementHost
         '*control-states $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defref *control-states
             ControlState :left-a? false :left-b? false :right-a? false :right-b? false :shift? false :left-move zero :left-prev zero :right-move zero :right-prev zero
@@ -151,23 +151,23 @@
                 set-button-state! field false
           :examples $ []
           :schema $ quote $ Fn Tag
-            -> $ Map Tag $ Fn js-ffi.browser/PointerEventHost (-> Unit)
+            -> $ Map Tag $ Fn browser/PointerEventHost (-> Unit)
         'create-container-placeholder $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn create-container-placeholder () (browser/create-element |div)
           :examples $ []
-          :schema $ quote $ Fn (-> js-ffi.browser/DomElementHost) (:features :js-ffi)
+          :schema $ quote $ Fn (-> browser/DomElementHost) (:features :js-ffi)
         'div $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn div (props events & children) (%element :props props :events events :children children)
           :examples $ []
           :schema $ quote $ Fn (Map Tag String)
-            Map Tag $ Fn js-ffi.browser/PointerEventHost $ -> Unit
+            Map Tag $ Fn browser/PointerEventHost $ -> Unit
             & touch-control.core/%element
             -> touch-control.core/%element
         'document-body $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn document-body ()
             (browser/document-body) .unwrap
           :examples $ []
-          :schema $ quote $ Fn (-> js-ffi.browser/DomElementHost) (:features :js-ffi)
+          :schema $ quote $ Fn (-> browser/DomElementHost) (:features :js-ffi)
         'install-shift-listeners! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn install-shift-listeners! ()
             browser/add-event-listener! |keydown $ fn (event)
@@ -191,7 +191,7 @@
                 host $ browser/keyboard-event-host event
               host :shift-key?
           :examples $ []
-          :schema $ quote $ Fn js-ffi.browser/EventHost (-> Bool) (:features :js-ffi)
+          :schema $ quote $ Fn browser/EventHost (-> Bool) (:features :js-ffi)
         'left-events $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def left-events
             let
@@ -219,7 +219,7 @@
                   , &unit
           :examples $ []
           :schema $ quote $ Map Tag
-            Fn js-ffi.browser/PointerEventHost $ -> Unit
+            Fn browser/PointerEventHost $ -> Unit
         'performance-now $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn performance-now () (shared/performance-now)
           :examples $ []
@@ -227,15 +227,15 @@
         'pointer-x $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn pointer-x (event) (event :layer-x)
           :examples $ []
-          :schema $ quote $ Fn js-ffi.browser/PointerEventHost (-> Number) (:features :js-ffi)
+          :schema $ quote $ Fn browser/PointerEventHost (-> Number) (:features :js-ffi)
         'pointer-y $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn pointer-y (event) (event :layer-y)
           :examples $ []
-          :schema $ quote $ Fn js-ffi.browser/PointerEventHost (-> Number) (:features :js-ffi)
+          :schema $ quote $ Fn browser/PointerEventHost (-> Number) (:features :js-ffi)
         'remove-container! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn remove-container! (value) (browser/element-remove! value)
           :examples $ []
-          :schema $ quote $ Fn js-ffi.browser/DomElementHost (-> Unit) (:features :js-ffi)
+          :schema $ quote $ Fn browser/DomElementHost (-> Unit) (:features :js-ffi)
         'render-control! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn render-control! () (remove-container! @*container)
             let
@@ -301,12 +301,12 @@
               browser/append-child! parent div
               , div
           :examples $ []
-          :schema $ quote $ Fn touch-control.core/%element js-ffi.browser/DomElementHost (-> js-ffi.browser/DomElementHost) (:features :js-ffi)
+          :schema $ quote $ Fn touch-control.core/%element browser/DomElementHost (-> browser/DomElementHost) (:features :js-ffi)
         'replace-control-loop! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn replace-control-loop! (duration f) (clear-control-loop!) (start-control-loop! duration f)
           :examples $ []
           :schema $ quote $ Fn Number
-            Fn Number touch-control.core/ControlState touch-control.core/ControlDelta $ -> Unit
+            Fn Number ControlState ControlDelta $ -> Unit
             -> Unit
             :features :js-ffi
         'right-events $ %{} 'CodeEntry (:doc |)
@@ -337,7 +337,7 @@
                   , &unit
           :examples $ []
           :schema $ quote $ Map Tag
-            Fn js-ffi.browser/PointerEventHost $ -> Unit
+            Fn browser/PointerEventHost $ -> Unit
         'set-button-state! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn set-button-state! (field value)
             cond
@@ -374,7 +374,7 @@
               , &unit
           :examples $ []
           :schema $ quote $ Fn Number
-            Fn Number touch-control.core/ControlState touch-control.core/ControlDelta $ -> Unit
+            Fn Number ControlState ControlDelta $ -> Unit
             -> Unit
             :features :js-ffi
         'try-fullscreen! $ %{} 'CodeEntry (:doc |)
