@@ -142,11 +142,11 @@
           :code $ quote $ defn connect-state (field)
             {}
               :pointerdown $ fn (event)
-                hint-fn $ Fn js-ffi.browser/PointerEventHost $ -> Unit
+                hint-fn $ Fn browser/PointerEventHost $ -> Unit
                 ; js/console.log |down event
                 set-button-state! field true
               :pointerup $ fn (event)
-                hint-fn $ Fn js-ffi.browser/PointerEventHost $ -> Unit
+                hint-fn $ Fn browser/PointerEventHost $ -> Unit
                 ; js/console.log |up event
                 set-button-state! field false
           :examples $ []
@@ -196,19 +196,19 @@
           :code $ quote $ def left-events
             let
                 on-leave $ fn (event)
-                  hint-fn $ Fn js-ffi.browser/PointerEventHost $ -> Unit
+                  hint-fn $ Fn browser/PointerEventHost $ -> Unit
                   swap! *control-states assoc :left-move zero
                   swap! *prev-control-states assoc :left-move zero
                   , &unit
                 on-enter $ fn (event)
-                  hint-fn $ Fn js-ffi.browser/PointerEventHost $ -> Unit
+                  hint-fn $ Fn browser/PointerEventHost $ -> Unit
                   reset! *left-origin $ [] (pointer-x event) (pointer-y event)
                   swap! *control-states assoc :left-move zero
                   swap! *prev-control-states assoc :left-move zero
                   , &unit
               {} (:pointerdown on-enter) (:pointerenter on-enter) (:pointerleave on-leave) (:pointerup on-leave)
                 :pointermove $ fn (event)
-                  hint-fn $ Fn js-ffi.browser/PointerEventHost $ -> Unit
+                  hint-fn $ Fn browser/PointerEventHost $ -> Unit
                   let
                       move $ assert-type
                         []
@@ -295,7 +295,7 @@
                       , .unwrap
                   browser/element-add-event-listener! div (to-string k)
                     fn (event)
-                      hint-fn $ Fn js-ffi.browser/EventHost $ -> Unit
+                      hint-fn $ Fn browser/EventHost $ -> Unit
                       handler $ browser/pointer-event-host event
               &doseq (child children) (render-dom! child div)
               browser/append-child! parent div
@@ -313,19 +313,19 @@
           :code $ quote $ def right-events
             let
                 on-enter $ fn (event)
-                  hint-fn $ Fn js-ffi.browser/PointerEventHost $ -> Unit
+                  hint-fn $ Fn browser/PointerEventHost $ -> Unit
                   reset! *right-origin $ [] (pointer-x event) (pointer-y event)
                   swap! *control-states assoc :right-move zero
                   swap! *prev-control-states assoc :right-move zero
                   , &unit
                 on-leave $ fn (event)
-                  hint-fn $ Fn js-ffi.browser/PointerEventHost $ -> Unit
+                  hint-fn $ Fn browser/PointerEventHost $ -> Unit
                   swap! *control-states assoc :right-move zero
                   swap! *prev-control-states assoc :right-move zero
                   , &unit
               {} (:pointerdown on-enter) (:pointerup on-leave) (:pointerenter on-enter) (:pointerleave on-leave)
                 :pointermove $ fn (event)
-                  hint-fn $ Fn js-ffi.browser/PointerEventHost $ -> Unit
+                  hint-fn $ Fn browser/PointerEventHost $ -> Unit
                   let
                       move $ assert-type
                         []
