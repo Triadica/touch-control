@@ -53,7 +53,7 @@ https://github.com/calcit-lang/respo-calcit-workflow
 
 ### Compatibility and validation
 
-候选 **0.0.40** 使用正式 Calcit / `@calcit/procs` 0.41.1 和 JS FFI 0.2.13。使用 Calcit 0.37.0 的项目可继续使用 Touch Control 0.0.39。升级工具链后重新生成 JS。
+候选 **0.0.40** 使用正式 Calcit / `@calcit/procs` 0.42.1 和 JS FFI 0.2.13。使用 Calcit 0.37.0 的项目可继续使用 Touch Control 0.0.39。升级工具链后重新生成 JS。
 
 `ControlState` 的 `:left-move`、`:left-prev`、`:right-move`、`:right-prev`，以及
 `ControlDelta` 的 `:left-move`、`:right-move`，从 `List Number` 收紧为

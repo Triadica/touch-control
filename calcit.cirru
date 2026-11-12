@@ -29,7 +29,7 @@
             render-control!
             start-control-loop! 300 $ fn (elapsed states delta) (show-data! elapsed states delta)
           :examples $ []
-          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
+          :schema $ quote $ Fn (-> Unit) (:features :io :js-ffi :state)
         'mount-target $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def mount-target
             (browser/query-selector |.app) .unwrap
@@ -45,7 +45,7 @@
               hud! |error build-errors
             , &unit
           :examples $ []
-          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
+          :schema $ quote $ Fn (-> Unit) (:features :io :js-ffi :state)
         'show-data! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn show-data! (elapsed states delta)
             println |showing elapsed (:left-move states) (:right-move states) (:left-a? states) (:right-a? states)
@@ -54,7 +54,7 @@
                 , .unwrap
               format-cirru-edn $ {} (:states states) (:delta delta)
           :examples $ []
-          :schema $ quote $ Fn Number touch-control.core/ControlState touch-control.core/ControlDelta (-> Unit) (:features :js-ffi)
+          :schema $ quote $ Fn Number touch-control.core/ControlState touch-control.core/ControlDelta (-> Unit) (:features :io :js-ffi)
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns touch-control.app.main
           :require (touch-control.app.config :as config)
@@ -99,7 +99,7 @@
         '*left-origin $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defref *left-origin ([] 0 0)
           :examples $ []
-          :schema $ quote $ Ref (List Number)
+          :schema $ quote $ Ref (Tuple Number Number)
         '*prev-control-states $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defref *prev-control-states (ControlDelta :left-move zero :right-move zero)
           :examples $ []
@@ -111,7 +111,7 @@
         '*right-origin $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defref *right-origin zero
           :examples $ []
-          :schema $ quote $ Ref (List Number)
+          :schema $ quote $ Ref (Tuple Number Number)
         '*shift-listener $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defref *shift-listener (install-shift-listeners!)
           :examples $ []
@@ -137,7 +137,7 @@
         'clear-control-loop! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn clear-control-loop! () (browser/clear-timeout! @*timeout-loop) (browser/cancel-animation-frame! @*raq-loop) &unit
           :examples $ []
-          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
+          :schema $ quote $ Fn (-> Unit) (:features :js-ffi :state)
         'connect-state $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn connect-state (field)
             {}
@@ -152,6 +152,7 @@
           :examples $ []
           :schema $ quote $ Fn Tag
             -> $ Map Tag $ Fn browser/PointerEventHost (-> Unit)
+            :features :state
         'create-container-placeholder $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn create-container-placeholder () (browser/create-element |div)
           :examples $ []
@@ -184,7 +185,7 @@
               , &unit
             , false
           :examples $ []
-          :schema $ quote $ Fn (-> Bool) (:features :js-ffi)
+          :schema $ quote $ Fn (-> Bool) (:features :js-ffi :state)
         'keyboard-shift? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn keyboard-shift? (event)
             let
@@ -202,18 +203,20 @@
                   , &unit
                 on-enter $ fn (event)
                   hint-fn $ Fn browser/PointerEventHost $ -> Unit
-                  reset! *left-origin $ [] (pointer-x event) (pointer-y event)
+                  reset! *left-origin $ assert-type
+                    [] (pointer-x event) (pointer-y event)
+                    Tuple Number Number
                   swap! *control-states assoc :left-move zero
                   swap! *prev-control-states assoc :left-move zero
                   , &unit
               {} (:pointerdown on-enter) (:pointerenter on-enter) (:pointerleave on-leave) (:pointerup on-leave)
                 :pointermove $ fn (event)
                   hint-fn $ Fn browser/PointerEventHost $ -> Unit
-                  let
+                  let[] (origin-x origin-y) @*left-origin $ let
                       move $ assert-type
                         []
-                          - (pointer-x event) (&list:nth @*left-origin 0)
-                          - (&list:nth @*left-origin 1) (pointer-y event)
+                          - (pointer-x event) origin-x
+                          - origin-y $ pointer-y event
                         Tuple Number Number
                     swap! *control-states assoc :left-move move
                   , &unit
@@ -274,7 +277,7 @@
               reset! *container dom
               , &unit
           :examples $ []
-          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
+          :schema $ quote $ Fn (-> Unit) (:features :js-ffi :state)
         'render-dom! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn render-dom! (el parent)
             let
@@ -308,13 +311,15 @@
           :schema $ quote $ Fn Number
             Fn Number ControlState ControlDelta $ -> Unit
             -> Unit
-            :features :js-ffi
+            :features :js-ffi :state
         'right-events $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def right-events
             let
                 on-enter $ fn (event)
                   hint-fn $ Fn browser/PointerEventHost $ -> Unit
-                  reset! *right-origin $ [] (pointer-x event) (pointer-y event)
+                  reset! *right-origin $ assert-type
+                    [] (pointer-x event) (pointer-y event)
+                    Tuple Number Number
                   swap! *control-states assoc :right-move zero
                   swap! *prev-control-states assoc :right-move zero
                   , &unit
@@ -326,11 +331,11 @@
               {} (:pointerdown on-enter) (:pointerup on-leave) (:pointerenter on-enter) (:pointerleave on-leave)
                 :pointermove $ fn (event)
                   hint-fn $ Fn browser/PointerEventHost $ -> Unit
-                  let
+                  let[] (origin-x origin-y) @*right-origin $ let
                       move $ assert-type
                         []
-                          - (pointer-x event) (&list:nth @*right-origin 0)
-                          - (&list:nth @*right-origin 1) (pointer-y event)
+                          - (pointer-x event) origin-x
+                          - origin-y $ pointer-y event
                         Tuple Number Number
                     ; js/console.log "|moving to" move
                     swap! *control-states assoc :right-move move
@@ -349,7 +354,7 @@
               true $ raise $ str-spaced |unknown-control-field field
             , &unit
           :examples $ []
-          :schema $ quote $ Fn Tag Bool (-> Unit)
+          :schema $ quote $ Fn Tag Bool (-> Unit) (:features :state)
         'start-control-loop! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn start-control-loop! (duration f)
             let
@@ -376,7 +381,7 @@
           :schema $ quote $ Fn Number
             Fn Number ControlState ControlDelta $ -> Unit
             -> Unit
-            :features :js-ffi
+            :features :js-ffi :state
         'try-fullscreen! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn try-fullscreen! ()
             if
