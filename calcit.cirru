@@ -309,9 +309,9 @@
           :code $ quote $ defn replace-control-loop! (duration f) (clear-control-loop!) (start-control-loop! duration f)
           :examples $ []
           :schema $ quote $ Fn Number
-            Fn Number ControlState ControlDelta $ -> Unit
+            Fn Number ControlState ControlDelta (-> Unit) (:features :io :state)
             -> Unit
-            :features :js-ffi :state
+            :features :io :js-ffi :state
         'right-events $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def right-events
             let
@@ -379,9 +379,9 @@
               , &unit
           :examples $ []
           :schema $ quote $ Fn Number
-            Fn Number ControlState ControlDelta $ -> Unit
+            Fn Number ControlState ControlDelta (-> Unit) (:features :io :state)
             -> Unit
-            :features :js-ffi :state
+            :features :io :js-ffi :state
         'try-fullscreen! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn try-fullscreen! ()
             if
