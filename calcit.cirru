@@ -172,11 +172,13 @@
         'install-shift-listeners! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn install-shift-listeners! ()
             browser/add-event-listener! |keydown $ fn (event)
+              hint-fn $ Fn browser/EventHost (-> Unit) (:features :state :js-ffi)
               if
                 and (keyboard-shift? event) (not @*shift-listener)
                 reset! *shift-listener true
               , &unit
             browser/add-event-listener! |keyup $ fn (event)
+              hint-fn $ Fn browser/EventHost (-> Unit) (:features :state :js-ffi)
               if
                 and
                   not $ keyboard-shift? event
