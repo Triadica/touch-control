@@ -53,7 +53,7 @@ https://github.com/calcit-lang/respo-calcit-workflow
 
 ### Compatibility and validation
 
-候选 **0.0.44** 使用正式 Calcit / `@calcit/procs` 0.44.0 和 JS FFI 0.2.20。Shift 监听器明确声明状态效果，键盘行为不变；升级后重新安装依赖并生成 JS。
+候选 **0.0.44** 使用正式 Calcit / `@calcit/procs` 0.44.0 和 JS FFI 0.2.23。Shift 监听器明确声明状态效果，键盘行为不变；升级后重新安装依赖并生成 JS。
 
 候选 **0.0.43** 使用正式 Calcit / `@calcit/procs` 0.44.0 和 JS FFI 0.2.19。使用 Calcit 0.37.0 的项目可继续使用 Touch Control 0.0.39。升级工具链后重新生成 JS。
 
