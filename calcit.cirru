@@ -37,7 +37,7 @@
           :schema $ quote browser/DomElementHost
         'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reload! ()
-            if (nil? build-errors)
+            if (js-nullish? build-errors)
               do
                 replace-control-loop! 300 $ fn (elapsed states delta) (show-data! elapsed states delta)
                 render-control!
